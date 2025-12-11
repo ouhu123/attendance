@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="campusattendance.attendance_student.mapper.TeacherMapper">
+    
+    <select id="findByTeacherNo" parameterType="String" resultType="campusattendance.attendance_student.model.Teacher">
+        SELECT * FROM teacher WHERE teacher_no = #{teacherNo}
+    </select>
+    
+</mapper>
