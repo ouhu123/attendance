@@ -6,6 +6,8 @@ import campusattendance.attendance_student.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * 学生Service实现类
  */
@@ -18,5 +20,15 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Student findByStudentNo(String studentNo) {
         return studentMapper.findByStudentNo(studentNo);
+    }
+    
+    @Override
+    public Student findById(Long studentId) {
+        return studentMapper.findById(studentId);
+    }
+    
+    @Override
+    public List<Student> getStudentsByClassId(Long classId) {
+        return studentMapper.selectByClassId(classId);
     }
 }

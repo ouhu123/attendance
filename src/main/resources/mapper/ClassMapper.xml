@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="campusattendance.attendance_student.mapper.ClassMapper">
+    <!-- 根据班级ID列表查询班级 -->
+    <select id="selectByIds" parameterType="java.util.List" resultType="campusattendance.attendance_student.model.Clazz">
+        SELECT id, class_name as className, grade, department, create_time as createTime
+        FROM class
+        WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+    
+    <!-- 查询所有班级 -->
+    <select id="selectAll" resultType="campusattendance.attendance_student.model.Clazz">
+        SELECT id, class_name as className, grade, department, create_time as createTime
+        FROM class
+        ORDER BY create_time DESC
+    </select>
+    
+    <!-- 根据ID查询班级 -->
+    <select id="selectById" parameterType="java.lang.Long" resultType="campusattendance.attendance_student.model.Clazz">
+        SELECT id, class_name as className, grade, department, create_time as createTime
+        FROM class
+        WHERE id = #{id}
+    </select>
+    
+    <!-- 添加班级 -->
+    <insert id="insert" parameterType="campusattendance.attendance_student.model.Clazz" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO class (class_name, grade, department, create_time)
+        VALUES (#{className}, #{grade}, #{department}, NOW())
+    </insert>
+    
+    <!-- 更新班级 -->
+    <update id="updateById" parameterType="campusattendance.attendance_student.model.Clazz">
+        UPDATE class
+        SET class_name = #{className},
+            grade = #{grade},
+            department = #{department}
+        WHERE id = #{id}
+    </update>
+    
+    <!-- 删除班级 -->
+    <delete id="deleteById" parameterType="java.lang.Long">
+        DELETE FROM class WHERE id = #{id}
+    </delete>
+    
+    <!-- 查询班级详情（包含学生数量和课程数量） -->
+    <select id="selectClassDetails" resultType="java.util.Map">
+        SELECT 
+            c.id, 
+            c.class_name as className, 
+            c.grade, 
+            c.department, 
+            COUNT(DISTINCT s.id) as studentCount,
+            COUNT(DISTINCT cc.course_id) as courseCount
+        FROM class c
+        LEFT JOIN student s ON c.id = s.class_id
+        LEFT JOIN course_class cc ON c.id = cc.class_id
+        GROUP BY c.id, c.class_name, c.grade, c.department
+        ORDER BY c.create_time DESC
+    </select>
+    
+    <!-- 根据教师ID查询其教授课程的班级列表及详情 -->
+    <select id="selectClassDetailsByTeacherId" parameterType="java.lang.Long" resultType="java.util.Map">
+        SELECT 
+            c.id, 
+            c.class_name as className, 
+            c.grade, 
+            c.department, 
+            COUNT(DISTINCT s.id) as studentCount,
+            COUNT(DISTINCT co.id) as courseCount,
+            IFNULL(GROUP_CONCAT(DISTINCT co.course_name ORDER BY co.course_name SEPARATOR ','), '') as courseNames
+        FROM class c
+        INNER JOIN course_class cc ON c.id = cc.class_id
+        INNER JOIN course co ON cc.course_id = co.id AND co.teacher_id = #{teacherId}
+        LEFT JOIN student s ON c.id = s.class_id
+        GROUP BY c.id, c.class_name, c.grade, c.department
+        ORDER BY c.create_time DESC
+    </select>
+    
+    <!-- 根据班级ID查询班级学生列表及签到统计 -->
+    <select id="selectStudentsWithAttendanceStats" parameterType="java.lang.Long" resultType="java.util.Map">
+        SELECT 
+            s.id,
+            s.student_no as studentNo,
+            s.name as studentName,
+            COUNT(CASE WHEN ar.status = 1 THEN 1 END) as attendanceCount,
+            COUNT(CASE WHEN ar.status = 2 THEN 1 END) as lateCount,
+            COUNT(CASE WHEN ar.status = 3 THEN 1 END) as leaveCount,
+            COUNT(CASE WHEN ar.status = 4 THEN 1 END) as absentCount
+        FROM student s
+        LEFT JOIN attendance_record ar ON s.id = ar.student_id
+        WHERE s.class_id = #{classId}
+        GROUP BY s.id, s.student_no, s.name
+        ORDER BY s.student_no
+    </select>
+    
+    <!-- 根据班级名称查询班级ID -->
+    <select id="selectIdByClassName" parameterType="java.lang.String" resultType="java.lang.Long">
+        SELECT id FROM class WHERE class_name = #{className} LIMIT 1
+    </select>
+</mapper>

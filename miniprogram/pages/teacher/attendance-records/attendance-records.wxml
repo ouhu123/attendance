@@ -1,0 +1,66 @@
+<!-- 签到记录页面 -->
+<view class="login-container">
+  <!-- 顶部装饰 -->
+  <view class="top-decoration">
+    <view class="decoration-circle circle1"></view>
+    <view class="decoration-circle circle2"></view>
+    <view class="decoration-circle circle3"></view>
+  </view>
+  
+  <!-- 标题 -->
+  <view class="title-section">
+    <text class="main-title">签到记录</text>
+    <text class="sub-title">查看所有签到历史</text>
+  </view>
+  
+  <!-- 签到记录容器 -->
+  <view class="records-container">
+    <!-- 筛选条件 -->
+    <view class="filter-section">
+      <view class="filter-item">
+        <text class="filter-label">课程名称</text>
+        <input 
+          class="filter-input course-input" 
+          placeholder="请输入课程名称" 
+          placeholder-class="placeholder-text"
+          bindinput="onFilterChange" 
+          data-filter="courseName"
+        />
+      </view>
+      <view class="filter-item">
+        <text class="filter-label">年级</text>
+        <input 
+          class="filter-input grade-input" 
+          placeholder="请输入年级" 
+          placeholder-class="placeholder-text"
+          bindinput="onFilterChange" 
+          data-filter="grade"
+        />
+      </view>
+
+    </view>
+    
+    <!-- 记录列表 -->
+    <view class="records-list">
+      <view class="record-item" wx:for="{{filteredRecords}}" wx:key="id" bindtap="viewRecordDetail" data-id="{{item.id}}">
+        <text class="class-department-grade">{{item.department}} {{item.grade}}</text>
+        <text class="class-name">{{item.className}}</text>
+        <text class="course-info">课程：{{item.courseName}}</text>
+        <view class="record-info">{{item.date}}</view>
+        <view class="record-status">{{item.attendanceStatus}}</view>
+        <view class="record-attendance">{{item.attendanceCount}}/{{item.totalStudents}} 人</view>
+        <view class="view-detail">查看详情 ></view>
+      </view>
+      
+      <!-- 空状态 -->
+      <view class="empty-records" wx:if="{{records.length === 0}}">
+        <text class="empty-text">暂无签到记录</text>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 底部装饰 -->
+  <view class="bottom-decoration">
+    <view class="decoration-wave"></view>
+  </view>
+</view>

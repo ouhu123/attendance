@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="campusattendance.attendance_student.mapper.AttendanceRecordMapper">
+
+    <insert id="insert" parameterType="campusattendance.attendance_student.model.AttendanceRecord">
+        INSERT INTO attendance_record (
+            session_id, session_code, student_id, student_no, student_name,
+            course_name, class_name, longitude, latitude, status,
+            sign_time, create_time, update_time
+        ) VALUES (
+                     #{sessionId}, #{sessionCode}, #{studentId}, #{studentNo}, #{studentName},
+                     #{courseName}, #{className}, #{longitude}, #{latitude}, #{status},
+                     #{signTime}, #{createTime}, #{updateTime}
+                 )
+    </insert>
+    
+    <update id="updateById" parameterType="campusattendance.attendance_student.model.AttendanceRecord">
+        UPDATE attendance_record
+        SET status = #{status},
+            sign_time = #{signTime},
+            update_time = #{updateTime}
+        WHERE id = #{id}
+    </update>
+
+    <select id="selectBySessionIdAndStudentId" parameterType="map" resultType="campusattendance.attendance_student.model.AttendanceRecord">
+        SELECT * FROM attendance_record WHERE session_id = #{sessionId} AND student_id = #{studentId}
+    </select>
+
+    <select id="selectBySessionId" parameterType="Long" resultType="campusattendance.attendance_student.model.AttendanceRecord">
+        SELECT * FROM attendance_record WHERE session_id = #{sessionId}
+    </select>
+    
+    <select id="countBySessionId" parameterType="Long" resultType="Integer">
+        SELECT COUNT(*) FROM attendance_record 
+        WHERE session_id = #{sessionId} 
+        AND status IN (1, 2)
+    </select>
+    
+    <select id="selectRecentByStudentId" parameterType="map" resultType="campusattendance.attendance_student.model.AttendanceRecord">
+        SELECT * FROM attendance_record 
+        WHERE student_id = #{studentId} 
+        ORDER BY sign_time DESC 
+        LIMIT #{limit}
+    </select>
+    
+    <select id="selectByStudentId" parameterType="Long" resultType="campusattendance.attendance_student.model.AttendanceRecord">
+        SELECT * FROM attendance_record 
+        WHERE student_id = #{studentId} 
+        ORDER BY sign_time DESC
+    </select>
+    
+    <select id="selectByStudentIdAndMonth" parameterType="map" resultType="campusattendance.attendance_student.model.AttendanceRecord">
+        SELECT * FROM attendance_record 
+        WHERE student_id = #{studentId} 
+        AND DATE_FORMAT(sign_time, '%Y-%m') = CONCAT(#{year}, '-', LPAD(#{month}, 2, '0'))
+        ORDER BY sign_time DESC
+    </select>
+
+</mapper>

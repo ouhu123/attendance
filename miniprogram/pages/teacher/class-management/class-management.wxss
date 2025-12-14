@@ -1,0 +1,352 @@
+/* pages/teacher/class-management/class-management.wxss */
+.class-management-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1976D2 0%, #64B5F6 100%);
+  padding: 20rpx;
+  box-sizing: border-box;
+  position: relative;
+}
+
+/* 顶部装饰 */
+.class-management-container::before {
+  content: '';
+  position: absolute;
+  top: -100rpx;
+  left: -100rpx;
+  width: 300rpx;
+  height: 300rpx;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  z-index: 0;
+}
+
+.class-management-container::after {
+  content: '';
+  position: absolute;
+  bottom: -100rpx;
+  right: -100rpx;
+  width: 300rpx;
+  height: 300rpx;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  z-index: 0;
+}
+
+.title-section {
+  text-align: center;
+  margin-top: 40rpx;
+  margin-bottom: 40rpx;
+  position: relative;
+  z-index: 1;
+}
+
+.page-title {
+  font-size: 36rpx;
+  color: #fff;
+  font-weight: bold;
+  text-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.1);
+}
+
+.class-list {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 120rpx;
+}
+
+.class-item {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.class-item:active {
+  transform: translateY(2rpx);
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.1);
+}
+
+.class-info-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 班级信息样式 */
+.class-department {
+  font-size: 26rpx;
+  color: #4285F4;
+  font-weight: 500;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.class-name {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  display: block;
+  margin-bottom: 12rpx;
+}
+
+/* 课程列表样式 */
+.course-list {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  font-size: 24rpx;
+  margin-bottom: 8rpx;
+}
+
+.course-label {
+  color: #666;
+  margin-right: 8rpx;
+}
+
+.course-names {
+  color: #1976D2;
+  font-weight: 500;
+}
+
+.class-info-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12rpx;
+}
+
+.class-meta {
+  font-size: 24rpx;
+  color: #666;
+  white-space: nowrap;
+}
+
+.view-details-btn {
+  padding: 8rpx 20rpx;
+  background-color: #1976D2;
+  color: white;
+  border-radius: 8rpx;
+  font-size: 24rpx;
+  border: none;
+  line-height: 1.5;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 100rpx 20rpx;
+  color: #fff;
+  font-size: 28rpx;
+}
+
+.add-class-btn {
+  position: fixed;
+  bottom: 30rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  border-radius: 50rpx;
+  padding: 20rpx 60rpx;
+  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.2);
+  z-index: 2;
+}
+
+.btn-text {
+  font-size: 28rpx;
+  color: #4285F4;
+  font-weight: bold;
+}
+
+/* 弹窗样式 */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #fff;
+  border-radius: 20rpx;
+  width: 80%;
+  max-width: 500rpx;
+  box-shadow: 0 10rpx 30rpx rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30rpx;
+  border-bottom: 2rpx solid #f0f0f0;
+}
+
+.modal-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.close-btn {
+  font-size: 40rpx;
+  color: #666;
+  width: 40rpx;
+  height: 40rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  transition: background 0.3s ease;
+}
+
+.close-btn:active {
+  background: #f0f0f0;
+}
+
+.modal-body {
+  padding: 30rpx;
+}
+
+.form-item {
+  margin-bottom: 30rpx;
+}
+
+.label {
+  display: block;
+  font-size: 26rpx;
+  color: #666;
+  margin-bottom: 10rpx;
+}
+
+.input {
+  width: 100%;
+  padding: 20rpx;
+  border: 2rpx solid #e0e0e0;
+  border-radius: 8rpx;
+  font-size: 28rpx;
+  box-sizing: border-box;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 20rpx 30rpx 30rpx;
+  border-top: 2rpx solid #f0f0f0;
+}
+
+.btn {
+  padding: 15rpx 30rpx;
+  border-radius: 8rpx;
+  font-size: 28rpx;
+  margin-left: 20rpx;
+  border: none;
+  outline: none;
+}
+
+.cancel-btn {
+  background: #f0f0f0;
+  color: #666;
+}
+
+.confirm-btn {
+  background: #4285F4;
+  color: #fff;
+}
+
+/* 装饰元素 */
+.wave-decoration {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100rpx;
+  background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg"><path fill="%23ffffff" fill-opacity="0.3" d="M0,224L80,234.7C160,245,320,267,480,256C640,245,800,203,960,192C1120,181,1280,203,1360,213.3L1440,224L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"></path></svg>') no-repeat center bottom;
+  background-size: cover;
+  z-index: 0;
+}
+/* 班级管理页面样式 */
+.class-management-container {
+  padding: 40rpx;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
+}
+
+.page-title {
+  text-align: center;
+  margin-bottom: 60rpx;
+}
+
+.title-text {
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #1976D2;
+}
+
+.class-list {
+  display: flex;
+  flex-direction: column;
+  gap: 30rpx;
+}
+
+.class-item {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 30rpx;
+  padding: 40rpx 30rpx;
+  box-shadow: 0 20rpx 60rpx rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.class-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10rpx;
+}
+
+.class-name {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.course-count {
+  font-size: 26rpx;
+  color: #666;
+}
+
+.class-stats {
+  font-size: 28rpx;
+  color: #1976D2;
+  font-weight: 500;
+}
+
+.add-class-btn {
+  position: fixed;
+  bottom: 50rpx;
+  right: 50rpx;
+  width: 100rpx;
+  height: 100rpx;
+  background: linear-gradient(135deg, #42A5F5 0%, #1976D2 100%);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 10rpx 30rpx rgba(66, 165, 245, 0.4);
+}
+
+.btn-text {
+  font-size: 48rpx;
+  font-weight: bold;
+  color: white;
+}

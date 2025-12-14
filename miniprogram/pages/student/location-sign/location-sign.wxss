@@ -1,0 +1,179 @@
+.container {
+  padding: 20rpx;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.back-btn-container {
+  position: absolute;
+  top: 10rpx;
+  left: 10rpx;
+  z-index: 10;
+}
+
+.back-btn {
+  background-color: #fff;
+  color: #333;
+  border-radius: 50%;
+  width: 60rpx;
+  height: 60rpx;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24rpx;
+  border: 1rpx solid #ddd;
+  box-shadow: 0 2rpx 5rpx rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  font-size: 36rpx;
+  font-weight: bold;
+  text-align: center;
+  margin: 20rpx 0 40rpx;
+  color: #333;
+}
+
+.section {
+  background-color: #fff;
+  border-radius: 12rpx;
+  padding: 24rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+.section-title {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 16rpx;
+  padding-bottom: 12rpx;
+  border-bottom: 2rpx solid #f0f0f0;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12rpx 0;
+  font-size: 26rpx;
+}
+
+.info-label {
+  color: #666;
+}
+
+.info-value {
+  color: #333;
+  font-weight: 500;
+}
+
+.location-status {
+  text-align: center;
+  padding: 40rpx 0;
+  color: #666;
+}
+
+.location-loading {
+  font-size: 26rpx;
+  margin-bottom: 16rpx;
+}
+
+.location-tip {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.result-section {
+  background-color: #fff;
+  border-radius: 12rpx;
+  padding: 40rpx 24rpx;
+  margin-bottom: 20rpx;
+  text-align: center;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+.result-icon {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  margin: 0 auto 24rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.success-icon {
+  font-size: 80rpx;
+  color: #07c160;
+}
+
+.error-icon {
+  font-size: 80rpx;
+  color: #ee0a24;
+}
+
+.result-message {
+  font-size: 28rpx;
+  color: #333;
+}
+
+.back-btn {
+  margin-top: 20rpx;
+  font-size: 26rpx;
+}
+
+/* 操作按钮样式 */
+.button-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+  margin: 20rpx 0;
+}
+
+.primary-btn {
+  background-color: #1989fa;
+  color: #fff;
+  border-radius: 8rpx;
+  font-size: 28rpx;
+  padding: 20rpx;
+  border: none;
+}
+
+.primary-btn[disabled] {
+  background-color: #ccc;
+  color: #999;
+}
+
+.sign-btn {
+  background-color: #07c160;
+  color: #fff;
+  border-radius: 8rpx;
+  font-size: 28rpx;
+  padding: 20rpx;
+  border: none;
+}
+
+.sign-btn[disabled] {
+  background-color: #ccc;
+  color: #999;
+}
+
+/* 动画效果 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.section, .result-section {
+  animation: fadeIn 0.3s ease-in;
+}

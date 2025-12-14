@@ -1,0 +1,86 @@
+<!-- 教师主页面 -->
+<view class="teacher-main-container">
+  <!-- 顶部装饰 -->
+  <view class="top-decoration">
+    <view class="decoration-circle circle1"></view>
+    <view class="decoration-circle circle2"></view>
+    <view class="decoration-circle circle3"></view>
+  </view>
+  
+  <!-- 顶部导航栏 -->
+  <view class="top-nav">
+    <view class="nav-left">
+      <view class="logout-btn" bindtap="logout">退出</view>
+      <text class="welcome-text">欢迎回来，{{userInfo.name || '老师'}}</text>
+    </view>
+    <view class="nav-right">
+      <view class="avatar" bindtap="goToProfile"></view>
+    </view>
+  </view>
+  
+  <!-- 快速操作卡片 -->
+  <view class="quick-actions">
+    <view class="action-card" bindtap="initiateAttendance">
+      <view class="card-icon icon-start"></view>
+      <text class="card-title">发起签到</text>
+      <text class="card-desc">开始新的课堂签到</text>
+    </view>
+    <view class="action-card" bindtap="viewAttendanceRecords">
+      <view class="card-icon icon-records"></view>
+      <text class="card-title">签到记录</text>
+      <text class="card-desc">查看历史签到数据</text>
+    </view>
+  </view>
+  
+  <!-- 今日签到信息 -->
+  <view class="recent-attendance">
+    <view class="section-title">
+      <text class="title-text">今日签到</text>
+    </view>
+    <view class="attendance-list">
+      <block wx:if="{{recentAttendances.length > 0}}">
+        <view class="attendance-item" wx:for="{{recentAttendances}}" wx:key="id">
+          <view class="item-left">
+            <text class="class-department-grade">{{item.department}} {{item.grade}}</text>
+            <text class="class-name">{{item.className}}</text>
+            <text class="course-info">课程：{{item.courseName}}</text>
+          </view>
+          <view class="item-right">
+            <text class="attendance-count">{{item.attendanceCount}}/{{item.totalStudents}}</text>
+            <text class="attendance-status">
+              {{item.status}}
+              <text wx:if="{{item.status === '进行中' && item.remainingSeconds > 0}}" class="remaining-time">({{item.remainingMinutes}}:{{item.remainingSecondsDisplay}})</text>
+            </text>
+            <button class="detail-btn" bindtap="viewAttendanceDetail" data-id="{{item.id}}" size="mini">查看详情</button>
+          </view>
+        </view>
+      </block>
+      <block wx:else>
+        <view style="text-align: center; padding: 40rpx 0; color: #999;">
+          暂无签到记录
+        </view>
+      </block>
+    </view>
+  </view>
+  
+  <!-- 统计信息 -->
+  <view class="statistics">
+    <view class="section-title">
+      <text class="title-text">教学统计</text>
+    </view>
+    <view class="stats-grid">
+      <view class="stat-item">
+        <text class="stat-number">{{stats.totalCourses || 0}}</text>
+        <text class="stat-label">总课程数</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-number">{{stats.todayAttendance || 0}}</text>
+        <text class="stat-label">今日签到</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-number">{{stats.averageAttendanceRate || '0.0%'}}</text>
+        <text class="stat-label">平均出勤率</text>
+      </view>
+    </view>
+  </view>
+</view>

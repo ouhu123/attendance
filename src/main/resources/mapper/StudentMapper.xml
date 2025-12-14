@@ -7,4 +7,16 @@
         SELECT * FROM student WHERE student_no = #{studentNo}
     </select>
     
+    <select id="findById" parameterType="Long" resultType="campusattendance.attendance_student.model.Student">
+        SELECT * FROM student WHERE id = #{studentId}
+    </select>
+    
+    <select id="selectByClassId" parameterType="Long" resultType="campusattendance.attendance_student.model.Student">
+        SELECT * FROM student WHERE class_id = #{classId}
+    </select>
+    
+    <select id="countByClassId" parameterType="Long" resultType="Integer">
+        SELECT COUNT(*) FROM student WHERE class_id = #{classId}
+    </select>
+    
 </mapper>

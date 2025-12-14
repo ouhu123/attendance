@@ -16,4 +16,11 @@ public interface TeacherMapper {
      * @return 教师信息
      */
     Teacher findByTeacherNo(@Param("teacherNo") String teacherNo);
+    
+    /**
+     * 根据ID查询教师信息
+     * @param teacherId 教师ID
+     * @return 教师信息
+     */
+    Teacher findById(@Param("teacherId") Long teacherId);
 }

@@ -1,0 +1,99 @@
+<!-- 签到详情页面 -->
+<view class="detail-container">
+  <!-- 顶部装饰 -->
+  <view class="top-decoration">
+    <view class="decoration-circle circle1"></view>
+    <view class="decoration-circle circle2"></view>
+    <view class="decoration-circle circle3"></view>
+  </view>
+  
+  <!-- 顶部导航栏 -->
+  <view class="top-nav">
+    <view class="nav-left">
+      <view class="back-btn" bindtap="goBack">‹ 返回</view>
+    </view>
+    <view class="nav-right">
+      <text class="page-title">签到详情</text>
+    </view>
+  </view>
+  
+  <!-- 签到信息 -->
+  <view class="session-info" wx:if="{{sessionInfo}}">
+    <view class="info-card">
+      <view class="info-row">
+        <text class="info-label">课程名称：</text>
+        <text class="info-value">{{sessionInfo.courseName}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">班级名称：</text>
+        <text class="info-value">{{sessionInfo.className}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">开始时间：</text>
+        <text class="info-value">{{sessionInfo.startTime}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">结束时间：</text>
+        <text class="info-value">{{sessionInfo.endTime}}</text>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 正常签到学生 -->
+  <view class="student-section">
+    <view class="section-header">
+      <text class="section-title">正常签到 ({{attendedStudents.length}})</text>
+    </view>
+    <view class="student-list">
+      <block wx:if="{{attendedStudents.length > 0}}">
+        <view class="student-item" wx:for="{{attendedStudents}}" wx:key="studentId">
+          <view class="student-info">
+            <text class="student-name">{{item.studentName}}</text>
+            <text class="student-no">{{item.studentNo}}</text>
+          </view>
+          <view class="student-status">
+            <text class="status-text status-attended">{{item.status}}</text>
+            <text class="sign-time" wx:if="{{item.signTime}}">{{item.signTime}}</text>
+          </view>
+        </view>
+      </block>
+      <block wx:else>
+        <view class="empty-state">
+          <text class="empty-text">暂无正常签到学生</text>
+        </view>
+      </block>
+    </view>
+  </view>
+  
+  <!-- 未签到学生 -->
+  <view class="student-section">
+    <view class="section-header">
+      <text class="section-title">未签到 ({{absentStudents.length}})</text>
+    </view>
+    <view class="student-list">
+      <block wx:if="{{absentStudents.length > 0}}">
+        <view class="student-item" wx:for="{{absentStudents}}" wx:key="studentId">
+          <view class="student-info">
+            <text class="student-name">{{item.studentName}}</text>
+            <text class="student-no">{{item.studentNo}}</text>
+          </view>
+          <view class="student-actions">
+            <text class="status-text status-absent" wx:if="{{item.status === '未签到'}}">{{item.status}}</text>
+            <text class="status-text status-late" wx:if="{{item.status === '迟到'}}">{{item.status}}</text>
+            <text class="status-text status-leave" wx:if="{{item.status === '请假'}}">{{item.status}}</text>
+            <view class="action-buttons" wx:if="{{item.status === '未签到'}}">
+              <button class="action-btn late-btn" bindtap="markAsLate" data-student-id="{{item.studentId}}" size="mini">迟到</button>
+              <button class="action-btn leave-btn" bindtap="markAsLeave" data-student-id="{{item.studentId}}" size="mini">请假</button>
+            </view>
+          </view>
+        </view>
+      </block>
+      <block wx:else>
+        <view class="empty-state">
+          <text class="empty-text">所有学生均已签到</text>
+        </view>
+      </block>
+    </view>
+  </view>
+</view>
+

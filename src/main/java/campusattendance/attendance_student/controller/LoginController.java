@@ -87,11 +87,11 @@ public class LoginController {
                     return Result.fail("工号不存在");
                 }
                 
-                logger.info("Teacher found: id={}, name={}, password={}", teacher.getId(), teacher.getName(), teacher.getPassword());
+                logger.info("Teacher found: id={}, name={}", teacher.getId(), teacher.getName());
                 
                 // 验证密码（明文比较）
                 if (!password.equals(teacher.getPassword())) {
-                    logger.info("Teacher password mismatch: expected={}, got={}", teacher.getPassword(), password);
+                    logger.info("Teacher password mismatch for user: {}", username);
                     return Result.fail("密码错误");
                 }
                 

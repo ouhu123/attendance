@@ -1,0 +1,152 @@
+<!--pages/teacher/initiate-attendance/initiate-attendance.wxml-->
+<view class="initiate-attendance-container">
+  <view class="page-title">
+    <text class="back-btn" bindtap="navigateBack">返回</text>
+    <text class="title-text">发起签到</text>
+  </view>
+
+  <!-- 未发起签到时显示表单 -->
+  <view wx:if="{{!showQRCode}}" class="form-container">
+    <!-- 课程名称 -->
+    <view class="form-item">
+      <text class="form-label">课程名称</text>
+      <picker bindchange="onCourseChange" value="{{courseIndex}}" range="{{courses}}" range-key="name">
+        <view class="form-picker">
+          {{courses.length > 0 ? courses[courseIndex].name : '请选择课程名称'}}
+        </view>
+      </picker>
+    </view>
+
+    <!-- 班级名称 -->
+    <view class="form-item">
+      <text class="form-label">班级名称</text>
+      <picker bindchange="onClassChange" value="{{classIndex}}" range="{{classes}}" range-key="name">
+        <view class="form-picker">
+          {{classes.length > 0 ? classes[classIndex].name : '请选择班级名称'}}
+        </view>
+      </picker>
+    </view>
+
+    <!-- 签到时长 -->
+    <view class="form-item">
+      <text class="form-label">签到时长</text>
+      <view class="duration-container">
+        <input class="duration-input" type="number" placeholder="自定义时长（分钟）" data-field="duration" value="{{formData.duration}}" bindinput="onInputChange" />
+        <text class="duration-unit">分钟</text>
+      </view>
+      <!-- 错误提示 -->
+      <text class="error-text" wx:if="{{errorMessages.duration}}">{{errorMessages.duration}}</text>
+    </view>
+
+    <!-- 签到方式 -->
+    <view class="form-item">
+      <text class="form-label">签到方式</text>
+      <picker bindchange="onAttendanceTypeChange" value="{{attendanceTypeIndex}}" range="{{attendanceTypes}}" range-key="name">
+        <view class="form-picker">
+          {{attendanceTypes[attendanceTypeIndex].name}}
+        </view>
+      </picker>
+    </view>
+
+    <!-- 位置信息 - 只有二维码签到和地理位置签到才显示 -->
+    <view class="location-info" wx:if="{{formData.attendanceType === 1 || formData.attendanceType === 2}}">
+      <text class="location-label">当前位置</text>
+      <view class="location-details">
+        <text class="location-text">{{locationText}}</text>
+        <text class="refresh-btn" bindtap="getLocation">获取</text>
+      </view>
+      
+      <!-- 签到距离选择 -->
+      <view class="distance-selection">
+        <text class="distance-label">签到距离</text>
+        <view class="distance-options">
+          <radio-group class="radio-group" bindchange="onDistanceChange">
+            <label class="radio-item" wx:for="{{distanceOptions}}" wx:key="value">
+              <radio value="{{item.value}}" checked="{{formData.radius === item.value}}" />
+              <text>{{item.label}}</text>
+            </label>
+          </radio-group>
+        </view>
+      </view>
+    </view>
+
+    <!-- 手势设置 - 只有九宫格签到才显示 -->
+    <view class="gesture-setting" wx:if="{{formData.attendanceType === 3}}">
+      <text class="gesture-label">设置手势</text>
+      <button class="set-gesture-btn" bindtap="showGestureModal">设置手势</button>
+      <view class="gesture-status" wx:if="{{gestureSet}}">
+        <text class="gesture-set-text">手势已设置</text>
+        <text class="clear-btn" bindtap="clearGesture">清除</text>
+      </view>
+    </view>
+    
+    <!-- 手势设置弹窗 -->
+    <view class="gesture-modal" wx:if="{{showGestureModal}}" catchtap="hideGestureModal">
+      <view class="gesture-modal-content" catchtap="stopPropagation">
+        <view class="modal-title">自定义手势签到</view>
+        <view class="modal-tip">请绘制解锁图案</view>
+        <view class="gesture-container-modal">
+          <view class="gesture-grid-modal" bindtouchstart="onGestureStart" bindtouchmove="onGestureMove" bindtouchend="onGestureEnd">
+            <!-- 手势点 -->
+            <view wx:for="{{gesturePoints}}" wx:key="index" class="gesture-point-modal {{isPointInPath(item.id) ? 'active' : ''}}" id="{{item.id}}" style="top:{{item.top}}%; left:{{item.left}}%;"></view>
+            <!-- 手势路径绘制画布 -->
+            <canvas type="2d" id="gesture-canvas-modal" class="gesture-canvas-modal"></canvas>
+          </view>
+        </view>
+        <view class="modal-buttons">
+          <button class="modal-btn-reset" bindtap="resetGestureInModal">重置</button>
+          <button class="modal-btn-confirm" bindtap="confirmGestureInModal">确认</button>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 发起签到按钮 -->
+  <button wx:if="{{!showQRCode && !showAttendanceStatus}}" class="initiate-btn" bindtap="initiateAttendance">发起签到</button>
+
+  <!-- 已发起签到时显示二维码 -->
+  <view wx:if="{{showQRCode}}" class="qr-code-container">
+    <view class="qr-code-section">
+      <text class="qr-code-title" wx:if="{{!isEnded}}">签到二维码</text>
+      <image class="qr-code" wx:if="{{!isEnded}}" src="{{qrCodeImage}}" mode="aspectFit" />
+      <text class="session-code" wx:if="{{!isEnded}}">签到码: {{sessionCode}}</text>
+      <text class="ended-qrcode-text" wx:if="{{isEnded}}">该签到已结束</text>
+    </view>
+
+    <!-- 签到状态 -->
+      <view class="attendance-status">
+        <text class="status-text">已签到: {{attendanceCount}}/{{totalStudents}} ({{attendancePercentage}}%)</text>
+        <view wx:if="{{!isEnded}}" class="remaining-time">
+          <text class="time-text">剩余时间</text>
+          <text class="time-display">{{remainingMinutes}}:{{remainingSecondsDisplay}}</text>
+        </view>
+        <progress percent="{{attendancePercentage}}" stroke-width="8" activeColor="#4CAF50" backgroundColor="#E0E0E0" />
+      </view>
+
+      <!-- 结束签到按钮 -->
+      <button wx:if="{{!isEnded}}" class="end-btn" bindtap="endAttendance">结束签到</button>
+  </view>
+
+  <!-- 已发起地理位置签到时显示签到状态 -->
+  <view wx:if="{{showAttendanceStatus}}" class="attendance-status-container">
+    <view class="attendance-type-section">
+      <text class="attendance-type-title" wx:if="{{!isEnded}}">{{attendanceType}}</text>
+      <text class="attendance-type-title ended-qrcode" wx:else>签到已结束</text>
+      <text class="session-code" wx:if="{{!isEnded}}">签到码: {{sessionCode}}</text>
+    </view>
+
+    <!-- 签到状态 -->
+      <view class="attendance-status">
+        <text class="status-text">已签到: {{attendanceCount}}/{{totalStudents}} ({{attendancePercentage}}%)</text>
+        <view wx:if="{{!isEnded}}" class="remaining-time">
+          <text class="time-text">剩余时间</text>
+          <text class="time-display">{{remainingMinutes}}:{{remainingSecondsDisplay}}</text>
+        </view>
+        <text wx:else class="ended-text">签到已结束</text>
+        <progress percent="{{attendancePercentage}}" stroke-width="8" activeColor="#4CAF50" backgroundColor="#E0E0E0" />
+      </view>
+
+      <!-- 结束签到按钮 -->
+      <button wx:if="{{!isEnded}}" class="end-btn" bindtap="endAttendance">结束签到</button>
+  </view>
+</view>

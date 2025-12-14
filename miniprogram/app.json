@@ -1,15 +1,68 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/logs/logs"
+    "pages/logs/logs",
+    "pages/teacher/main/main",
+    "pages/teacher/initiate-attendance/initiate-attendance",
+    "pages/teacher/attendance-records/attendance-records",
+    "pages/teacher/attendance-detail/attendance-detail",
+    "pages/teacher/profile/profile",
+    "pages/teacher/class-management/class-management",
+    "pages/teacher/class-details/class-details",
+    "pages/student/main/main",
+    "pages/student/attendance-records/attendance-records",
+    "pages/student/profile/profile",
+    "pages/student/sign/sign",
+    "pages/student/location-sign/location-sign"
   ],
   "window": {
     "navigationBarTextStyle": "white",
     "navigationBarTitleText": "校园课堂考勤系统",
     "navigationBarBackgroundColor": "#1976D2"
   },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#1976D2",
+    "backgroundColor": "#ffffff",
+    "fontSize": 24,
+    "spacing": 30,
+    "list": [
+      {
+        "pagePath": "pages/teacher/main/main",
+        "text": "首页",
+        "iconPath": "",
+        "selectedIconPath": ""
+      },
+      {
+        "pagePath": "pages/teacher/attendance-records/attendance-records",
+        "text": "签到记录",
+        "iconPath": "",
+        "selectedIconPath": ""
+      },
+      {
+        "pagePath": "pages/teacher/class-management/class-management",
+        "text": "班级管理",
+        "iconPath": "",
+        "selectedIconPath": ""
+      },
+      {
+        "pagePath": "pages/teacher/profile/profile",
+        "text": "个人中心",
+        "iconPath": "",
+        "selectedIconPath": ""
+      }
+    ]
+  },
   "style": "v2",
   "componentFramework": "glass-easel",
   "sitemapLocation": "sitemap.json",
-  "lazyCodeLoading": "requiredComponents"
+  "lazyCodeLoading": "requiredComponents",
+  "permission": {
+    "scope.userLocation": {
+      "desc": "您的位置信息将用于签到功能的位置验证"
+    }
+  },
+  "requiredPrivateInfos": [
+    "getLocation"
+  ]
 }

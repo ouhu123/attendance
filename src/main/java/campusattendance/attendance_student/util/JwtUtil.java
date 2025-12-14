@@ -2,7 +2,7 @@ package campusattendance.attendance_student.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -43,9 +43,17 @@ public class JwtUtil {
         claims.put("username", username);
         claims.put("role", role);
         
-        // 简化实现，避免JWT生成过程中的异常
-        // 直接返回一个简单的令牌格式，用于测试
-        return "test-token-" + userId + "-" + username + "-" + role;
+        Date now = new Date();
+        Date expirationDate = new Date(now.getTime() + getExpirationInMillis());
+        
+        // 生成标准的JWT令牌（兼容0.11.5版本的API）
+        return Jwts.builder()
+                .setClaims(claims)
+                .setSubject(username)
+                .setIssuedAt(now)
+                .setExpiration(expirationDate)
+                .signWith(Keys.hmacShaKeyFor(secret.getBytes()))
+                .compact();
     }
     
     /**
@@ -54,8 +62,9 @@ public class JwtUtil {
      * @return Claims
      */
     public Claims getClaimsFromToken(String token) {
-        return Jwts.parser()
-                .setSigningKey(secret)
+        return Jwts.parserBuilder()
+                .setSigningKey(Keys.hmacShaKeyFor(secret.getBytes()))
+                .build()
                 .parseClaimsJws(token)
                 .getBody();
     }

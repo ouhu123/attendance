@@ -1,0 +1,70 @@
+<view class="container">
+  <!-- 返回按钮 -->
+  <view class="back-btn-container">
+    <button class="back-btn" type="default" bindtap="goBack">返回</button>
+  </view>
+  <view class="title">地理位置签到</view>
+  
+  <!-- 签到信息 -->
+  <view class="section">
+    <view class="section-title">签到信息</view>
+    <view class="info-item">
+      <view class="info-label">课程名称:</view>
+      <view class="info-value">{{sessionInfo.courseName}}</view>
+    </view>
+    <view class="info-item">
+      <view class="info-label">班级名称:</view>
+      <view class="info-value">{{sessionInfo.className}}</view>
+    </view>
+    <view class="info-item">
+      <view class="info-label">签到范围</view>
+      <view class="info-value">{{sessionInfo.radius}}米</view>
+    </view>
+    <view class="info-item">
+      <view class="info-value">{{remainingTime}}</view>
+    </view>
+  </view>
+  
+  <!-- 位置信息 -->
+  <view class="section">
+    <view class="section-title">当前位置</view>
+    <view class="location-status" wx:if="{{!locationInfo}}">
+      <view class="location-loading">正在获取位置信息...</view>
+      <view class="location-tip">请确保已开启定位服务</view>
+    </view>
+    <view class="location-info" wx:else>
+      <view class="info-item">
+        <view class="info-label">纬度</view>
+        <view class="info-value">{{locationInfo.latitude}}</view>
+      </view>
+      <view class="info-item">
+        <view class="info-label">经度</view>
+        <view class="info-value">{{locationInfo.longitude}}</view>
+      </view>
+      <view class="info-item">
+        <view class="info-label">距离签到点</view>
+        <view class="info-value">{{distance}}米</view>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 签到结果 -->
+  <view class="result-section" wx:if="{{signResult}}">
+    <view class="result-icon" wx:if="{{signResult.success}}">
+      <view class="success-icon">✓</view>
+    </view>
+    <view class="result-icon" wx:else>
+      <view class="error-icon">✗</view>
+    </view>
+    <view class="result-message">{{signResult.message}}</view>
+  </view>
+  
+  <!-- 操作按钮 -->
+  <view class="button-section">
+    <button class="primary-btn" bindtap="getLocation" disabled="{{signResult && signResult.success}}">获取</button>
+    <button class="sign-btn" bindtap="manualSign" disabled="{{!locationInfo || (signResult && signResult.success)}}">
+      {{signResult && signResult.success ? '已签到成功' : '点击签到'}}
+    </button>
+  </view>
+  
+</view>

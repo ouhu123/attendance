@@ -19,4 +19,9 @@ public class TeacherServiceImpl implements TeacherService {
     public Teacher findByTeacherNo(String teacherNo) {
         return teacherMapper.findByTeacherNo(teacherNo);
     }
+    
+    @Override
+    public Teacher findById(Long teacherId) {
+        return teacherMapper.findById(teacherId);
+    }
 }

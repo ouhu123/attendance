@@ -1,0 +1,65 @@
+<view class="page">
+  <!-- 顶部装饰 -->
+  <view class="circle1"></view>
+  <view class="circle2"></view>
+  <view class="circle3"></view>
+  
+  <!-- 顶部导航栏 -->
+  <view class="top-nav">
+    <view class="nav-left">
+      <view class="logout-btn" bindtap="logout">退出</view>
+      <text class="welcome-text">签到记录</text>
+    </view>
+    <view class="nav-right" bindtap="goToProfile">
+      <image class="avatar" src="../../images/avatar.png" mode="aspectFit"></image>
+    </view>
+  </view>
+  
+  <!-- 日期选择 -->
+  <view class="date-picker">
+    <view class="month-label">{{currentMonth}} 月</view>
+    <view class="date-controls">
+      <view class="control-btn" bindtap="prevMonth">
+        <text class="icon">‹</text>
+      </view>
+      <view class="control-btn" bindtap="nextMonth">
+        <text class="icon">›</text>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 签到记录列表 -->
+  <view class="attendance-list">
+    <view class="list-header">
+      <text class="header-item">日期</text>
+      <text class="header-item">课程</text>
+      <text class="header-item">状态</text>
+      <text class="header-item">签到时间</text>
+    </view>
+    
+    <view class="list-content">
+      <block wx:for="{{attendanceRecords}}" wx:key="id">
+        <view class="record-item">
+          <text class="record-date">{{item.date}}</text>
+          <text class="record-course">{{item.courseName}}</text>
+          <view class="record-status">
+            <text class="status-text {{item.status === '正常' ? 'status-normal' : item.status === '迟到' ? 'status-late' : 'status-absent'}}">
+              {{item.status}}
+            </text>
+          </view>
+          <text class="record-time">{{item.signTime || '--'}}</text>
+        </view>
+      </block>
+      
+      <view class="no-data" wx:if="{{attendanceRecords.length === 0}}">
+        <text>本月暂无签到记录</text>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 返回按钮 -->
+  <view class="back-btn" bindtap="goBack">
+    <text class="back-icon">‹</text>
+    <text class="back-text">返回首页</text>
+  </view>
+</view>

@@ -1,0 +1,83 @@
+<view class="container">
+  <view class="title">签到验证</view>
+  
+  <!-- 位置信息展示 -->
+  <view class="section">
+    <view class="section-title">当前位置</view>
+    <view class="location-row">
+      <view class="location-prompt">点击获取当前位置</view>
+      <button 
+        class="get-location-btn" 
+        type="primary" 
+        bindtap="getLocation">
+        获取
+      </button>
+    </view>
+    <view class="location-info" wx:if="{{locationInfo}}">
+      <view>纬度：{{locationInfo.latitude}}</view>
+      <view>经度：{{locationInfo.longitude}}</view>
+      <view>地址：{{locationInfo.address || '获取中...'}}</view>
+      <button 
+        class="open-map-btn" 
+        type="default" 
+        bindtap="openLocation">
+        打开地图
+      </button>
+    </view>
+  </view>
+  
+  <!-- 扫码签到 -->
+  <view class="section">
+    <view class="section-title">扫码签到</view>
+    <view class="scan-info">
+      <view wx:if="{{scanResult}}">
+        <view>签到码：{{scanResult.sessionCode}}</view>
+        <view>课程：{{scanResult.courseName}}</view>
+      </view>
+      <view wx:else class="scan-prompt">
+        请扫描教师提供的签到二维码
+      </view>
+    </view>
+    <button 
+      class="scan-btn" 
+      type="primary" 
+      bindtap="scanQRCode" 
+      wx:if="{{!scanResult}}">
+      扫描二维码
+    </button>
+  </view>
+  
+  <!-- 手势九宫格签到 -->
+  <view class="section" wx:if="{{sessionInfo && sessionInfo.attendanceType === 3}}">
+    <view class="section-title">九宫格签到</view>
+    <view class="gesture-container">
+      <view class="gesture-grid" bindtouchstart="onGestureStart" bindtouchmove="onGestureMove" bindtouchend="onGestureEnd">
+        <!-- 手势点 -->
+        <view wx:for="{{gesturePoints}}" wx:key="index" class="gesture-point {{isPointInPath(item.id) ? 'active' : ''}}" id="{{item.id}}" style="top:{{item.top}}%; left:{{item.left}}%;"></view>
+        <!-- 手势路径绘制画布 -->
+        <canvas type="2d" id="gesture-canvas" class="gesture-canvas"></canvas>
+      </view>
+      <view class="gesture-path">{{gesturePath}}</view>
+      <text class="gesture-tip">请绘制与教师设置一致的手势</text>
+    </view>
+  </view>
+  
+  <!-- 确认签到按钮 -->
+  <button 
+    class="sign-btn" 
+    type="primary" 
+    bindtap="confirmSign" 
+    disabled="{{!canSign}}"
+    wx:if="{{scanResult && (locationInfo || (sessionInfo && sessionInfo.attendanceType === 3))}}">
+    确认签到
+  </button>
+  
+  <!-- 重置按钮 -->
+  <button 
+    class="reset-btn" 
+    type="warn" 
+    bindtap="reset" 
+    wx:if="{{locationInfo || scanResult}}">
+    重新开始
+  </button>
+</view>

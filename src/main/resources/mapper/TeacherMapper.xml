@@ -7,4 +7,8 @@
         SELECT * FROM teacher WHERE teacher_no = #{teacherNo}
     </select>
     
+    <select id="findById" parameterType="Long" resultType="campusattendance.attendance_student.model.Teacher">
+        SELECT * FROM teacher WHERE id = #{teacherId}
+    </select>
+    
 </mapper>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="campusattendance.attendance_student.mapper.AttendanceSessionMapper">
+
+    <insert id="insert" parameterType="campusattendance.attendance_student.model.AttendanceSession">
+        INSERT INTO attendance_session (
+            session_code, teacher_id, teacher_no, course_name, class_name,
+            longitude, latitude, radius, duration, gesture, start_time, end_time,
+            status, create_time, update_time, attendance_type
+        ) VALUES (
+                     #{sessionCode}, #{teacherId}, #{teacherNo}, #{courseName}, #{className},
+                     #{longitude}, #{latitude}, #{radius}, #{duration}, #{gesture}, #{startTime}, #{endTime},
+                     #{status}, #{createTime}, #{updateTime}, #{attendanceType}
+                 )
+    </insert>
+
+    <select id="selectBySessionCode" parameterType="String" resultType="campusattendance.attendance_student.model.AttendanceSession">
+        SELECT * FROM attendance_session WHERE session_code = #{sessionCode}
+    </select>
+
+    <update id="updateById" parameterType="campusattendance.attendance_student.model.AttendanceSession">
+        UPDATE attendance_session SET
+                                      session_code = #{sessionCode},
+                                      teacher_id = #{teacherId},
+                                      teacher_no = #{teacherNo},
+                                      course_name = #{courseName},
+                                      class_name = #{className},
+                                      longitude = #{longitude},
+                                      latitude = #{latitude},
+                                      radius = #{radius},
+                                      duration = #{duration},
+                                      gesture = #{gesture},
+                                      start_time = #{startTime},
+                                      end_time = #{endTime},
+                                      status = #{status},
+                                      update_time = #{updateTime},
+                                      attendance_type = #{attendanceType}
+        WHERE id = #{id}
+    </update>
+
+    <select id="selectByTeacherId" parameterType="Long" resultType="campusattendance.attendance_student.model.AttendanceSession">
+        SELECT * FROM attendance_session WHERE teacher_id = #{teacherId} ORDER BY create_time DESC
+    </select>
+    
+    <select id="selectActiveSessions" resultType="campusattendance.attendance_student.model.AttendanceSession">
+        SELECT * FROM attendance_session 
+        WHERE status = 1 
+        AND end_time > NOW() 
+        ORDER BY create_time DESC
+    </select>
+    
+    <select id="selectByPrimaryKey" parameterType="Long" resultType="campusattendance.attendance_student.model.AttendanceSession">
+        SELECT * FROM attendance_session WHERE id = #{id}
+    </select>
+
+</mapper>
