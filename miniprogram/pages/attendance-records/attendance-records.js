@@ -155,7 +155,6 @@ Page({
           const formattedRecords = res.data.data.map(item => {
             return {
               ...item,
-              attendanceTime: this.formatDateTime(item.attendanceTime),
               signTime: item.signTime ? this.formatDateTime(item.signTime) : ''
             };
           });
@@ -344,7 +343,24 @@ Page({
   formatDateTime: function(dateTimeString) {
     if (!dateTimeString) return '';
     
+    // 尝试创建日期对象
     const date = new Date(dateTimeString);
+    
+    // 检查是否是有效日期
+    if (isNaN(date.getTime())) {
+      // 如果是字符串且包含小时和分钟信息，尝试手动解析
+      if (typeof dateTimeString === 'string') {
+        // 处理常见的时间格式，如 "HH:mm" 或 "HH:mm:ss"
+        const timeMatch = dateTimeString.match(/^(\d{2}):(\d{2})(?::(\d{2}))?$/);
+        if (timeMatch) {
+          const [, hour, minute, second] = timeMatch;
+          return `${hour}:${minute}`;
+        }
+      }
+      return '';
+    }
+    
+    // 有效日期，格式化显示
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const day = date.getDate().toString().padStart(2, '0');

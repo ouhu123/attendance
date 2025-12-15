@@ -191,6 +191,14 @@ Page({
       success: res => {
         if (res.data.code === 200) {
           let attendance = res.data.data;
+          
+          // 处理没有当前签到的情况
+          if (!attendance) {
+            this.setData({ currentAttendance: null });
+            this.setData({ countdownTime: null });
+            return;
+          }
+          
           // 将数字状态转换为文字描述
           if (attendance.status !== undefined) {
             switch(Number(attendance.status)) {
@@ -492,6 +500,25 @@ Page({
     gestureCanvasContext.arc(x, y, 8, 0, Math.PI * 2);
     gestureCanvasContext.fillStyle = '#ffffff';
     gestureCanvasContext.fill();
+  },
+
+  // 重置手势
+  resetGesture() {
+    const { gestureCanvasContext, gestureGridRect } = this.data;
+    // 清除画布
+    if (gestureCanvasContext && gestureGridRect) {
+      gestureCanvasContext.clearRect(0, 0, gestureGridRect.width, gestureGridRect.height);
+    }
+    // 重置当前选中的点和手势
+    this.setData({
+      currentPoints: [],
+      gesture: ''
+    });
+  },
+
+  // 阻止事件冒泡
+  stopPropagation() {
+    // 空方法，用于阻止点击事件冒泡到父元素
   },
 
   confirmGestureSign() {

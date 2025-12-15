@@ -111,8 +111,8 @@
       <text class="attendance-time">开始时间：{{currentAttendance.startTime}}</text>
       <text class="attendance-status">
         状态：{{currentAttendance.status}}
-        <text wx:if="{{currentAttendance.status === '进行中' && countdownTime !== null}}" class="countdown">
-          ({{countdownTime > 0 ? countdownTime + '秒' : '已结束'}})
+        <text wx:if="{{currentAttendance.status === '进行中' && countdownTime > 0}}" class="countdown">
+          ({{countdownTime}}秒)
         </text>
       </text>
 
