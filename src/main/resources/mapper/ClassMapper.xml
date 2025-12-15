@@ -123,4 +123,26 @@
     <select id="selectIdByClassName" parameterType="java.lang.String" resultType="java.lang.Long">
         SELECT id FROM class WHERE class_name = #{className} LIMIT 1
     </select>
+    
+    <!-- 根据学生ID查询其所在班级的详情信息 -->
+    <select id="selectClassDetailsByStudentId" parameterType="java.lang.Long" resultType="java.util.Map">
+        SELECT 
+            c.id, 
+            c.class_name as className, 
+            c.grade, 
+            c.department, 
+            COUNT(DISTINCT s.id) as studentCount,
+            COUNT(DISTINCT cc.course_id) as courseCount,
+            IFNULL(GROUP_CONCAT(DISTINCT co.course_name ORDER BY co.course_name SEPARATOR ','), '') as courseNames
+        FROM class c
+        LEFT JOIN student s ON c.id = s.class_id
+        LEFT JOIN course_class cc ON c.id = cc.class_id
+        LEFT JOIN course co ON cc.course_id = co.id
+        WHERE EXISTS (
+            SELECT 1 FROM student s2 
+            WHERE s2.class_id = c.id AND s2.id = #{studentId}
+        )
+        GROUP BY c.id, c.class_name, c.grade, c.department
+        ORDER BY c.create_time DESC
+    </select>
 </mapper>

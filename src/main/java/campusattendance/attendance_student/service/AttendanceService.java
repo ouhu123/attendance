@@ -95,6 +95,14 @@ public interface AttendanceService {
      * @return 签到记录列表
      */
     List<Map<String, Object>> getAttendanceRecordsByStudent(Long studentId, Integer year, Integer month);
+    
+    /**
+     * 获取学生某门课程的签到统计数据
+     * @param studentId 学生ID
+     * @param courseName 课程名称
+     * @return 签到统计数据
+     */
+    Map<String, Object> getAttendanceStatsByStudentAndCourse(Long studentId, String courseName);
 
     /**
      * 结束签到

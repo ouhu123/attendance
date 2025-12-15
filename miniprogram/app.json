@@ -16,6 +16,7 @@
     "pages/student/attendance-records/attendance-records",
     "pages/student/profile/profile",
     "pages/student/change-password/change-password",
+    "pages/student/course-statistics/course-statistics",
     "pages/main/main",
     "pages/attendance-records/attendance-records",
     "pages/profile/profile",

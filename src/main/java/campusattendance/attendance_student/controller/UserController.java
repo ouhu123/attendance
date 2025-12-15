@@ -76,12 +76,14 @@ public class UserController {
                 userInfo.put("studentNo", student.getStudentNo());
                 userInfo.put("phone", student.getPhone());
                 
-                // 通过班级获取学院信息
+                // 通过班级获取学院信息和班级名称
                 Clazz clazz = classService.getClassById(student.getClassId());
                 if (clazz != null) {
                     userInfo.put("college", clazz.getDepartment());
+                    userInfo.put("className", clazz.getClassName());
                 } else {
                     userInfo.put("college", "");
+                    userInfo.put("className", "");
                     logger.warn("未找到学生所属班级信息，studentId: {}", userId);
                 }
                 

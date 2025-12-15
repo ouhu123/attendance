@@ -71,15 +71,92 @@ public class StudentController {
      * @return 统计数据
      */
     @GetMapping("/my-statistics")
-    public Map<String, Object> getAttendanceStatistics(
-            @RequestParam Long studentId,
-            @RequestParam(required = false) String studentNo) {
-        Map<String, Object> statistics = attendanceService.getAttendanceStatsByStudent(studentId);
-        Map<String, Object> result = new HashMap<>();
-        result.put("code", 200);
-        result.put("message", "success");
-        result.put("data", statistics);
-        return result;
+    public Map<String, Object> getAttendanceStatistics(@RequestParam(required = false) Long studentId,
+                                                     @RequestParam(required = false) String studentNo) {
+        if (studentId == null && studentNo == null) {
+            Map<String, Object> result = new HashMap<>();
+            result.put("code", 400);
+            result.put("message", "学生ID或学生编号不能为空");
+            return result;
+        }
+        
+        if (studentId == null) {
+            // 根据学生编号查询学生ID
+            campusattendance.attendance_student.model.Student student = studentService.findByStudentNo(studentNo);
+            if (student == null) {
+                Map<String, Object> result = new HashMap<>();
+                result.put("code", 400);
+                result.put("message", "该学生不存在");
+                return result;
+            }
+            studentId = student.getId();
+        }
+        
+        try {
+            Map<String, Object> statistics = attendanceService.getAttendanceStatsByStudent(studentId);
+            Map<String, Object> result = new HashMap<>();
+            result.put("code", 200);
+            result.put("message", "success");
+            result.put("data", statistics);
+            return result;
+        } catch (Exception e) {
+            Map<String, Object> result = new HashMap<>();
+            result.put("code", 500);
+            result.put("message", "获取签到统计数据失败：" + e.getMessage());
+            return result;
+        }
+    }
+    
+    /**
+     * 获取学生某门课程的签到统计数据
+     * @param studentId 学生ID
+     * @param studentNo 学生编号
+     * @param courseName 课程名称
+     * @return 签到统计数据
+     */
+    @GetMapping("/my-course-statistics")
+    public Map<String, Object> getAttendanceCourseStatistics(@RequestParam(required = false) Long studentId,
+                                                         @RequestParam(required = false) String studentNo,
+                                                         @RequestParam String courseName) {
+        if (studentId == null && studentNo == null) {
+            Map<String, Object> result = new HashMap<>();
+            result.put("code", 400);
+            result.put("message", "学生ID或学生编号不能为空");
+            return result;
+        }
+        
+        if (courseName == null || courseName.isEmpty()) {
+            Map<String, Object> result = new HashMap<>();
+            result.put("code", 400);
+            result.put("message", "课程名称不能为空");
+            return result;
+        }
+        
+        if (studentId == null) {
+            // 根据学生编号查询学生ID
+            campusattendance.attendance_student.model.Student student = studentService.findByStudentNo(studentNo);
+            if (student == null) {
+                Map<String, Object> result = new HashMap<>();
+                result.put("code", 400);
+                result.put("message", "该学生不存在");
+                return result;
+            }
+            studentId = student.getId();
+        }
+        
+        try {
+            Map<String, Object> statistics = attendanceService.getAttendanceStatsByStudentAndCourse(studentId, courseName);
+            Map<String, Object> result = new HashMap<>();
+            result.put("code", 200);
+            result.put("message", "success");
+            result.put("data", statistics);
+            return result;
+        } catch (Exception e) {
+            Map<String, Object> result = new HashMap<>();
+            result.put("code", 500);
+            result.put("message", "获取课程签到统计数据失败：" + e.getMessage());
+            return result;
+        }
     }
 
     /**

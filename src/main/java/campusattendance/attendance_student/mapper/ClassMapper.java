@@ -86,4 +86,11 @@ public interface ClassMapper {
      * @return 课程列表
      */
     List<Map<String, Object>> selectCoursesByClassId(@Param("classId") Long classId);
+    
+    /**
+     * 根据学生ID查询其所在班级的详情信息
+     * @param studentId 学生ID
+     * @return 班级详情信息
+     */
+    List<Map<String, Object>> selectClassDetailsByStudentId(@Param("studentId") Long studentId);
 }

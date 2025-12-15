@@ -56,5 +56,18 @@
         AND DATE_FORMAT(sign_time, '%Y-%m') = CONCAT(#{year}, '-', LPAD(#{month}, 2, '0'))
         ORDER BY sign_time DESC
     </select>
+    
+    <!-- 根据学生ID和课程名称统计签到状态 -->
+    <select id="selectStatsByStudentIdAndCourseName" parameterType="map" resultType="java.util.Map">
+        SELECT 
+            COUNT(CASE WHEN status = 1 THEN 1 END) as attendanceCount,
+            COUNT(CASE WHEN status = 2 THEN 1 END) as lateCount,
+            COUNT(CASE WHEN status = 3 THEN 1 END) as leaveCount,
+            COUNT(CASE WHEN status = 4 THEN 1 END) as absentCount,
+            COUNT(*) as totalCount
+        FROM attendance_record 
+        WHERE student_id = #{studentId}
+        AND course_name = #{courseName}
+    </select>
 
 </mapper>

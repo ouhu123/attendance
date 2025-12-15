@@ -1,0 +1,40 @@
+<!-- pages/student/course-statistics/course-statistics.wxml -->
+<view class="container">
+  <!-- 课程信息卡片 -->
+  <view class="course-info-card">
+    <view class="course-title">
+      <text class="course-name">{{courseName}}</text>
+    </view>
+  </view>
+  
+  <!-- 出勤率信息 -->
+  <view class="attendance-rate-card">
+    <view class="rate-title">出勤率</view>
+    <view class="rate-value">{{attendancePercentage}}%</view>
+  </view>
+  
+  <!-- 签到明细卡片 -->
+  <view class="details-card">
+    <view class="details-title">签到明细</view>
+    <view class="detail-item">
+      <text class="detail-label">应签到次数</text>
+      <text class="detail-value">{{totalAttendance}}</text>
+    </view>
+    <view class="detail-item">
+      <text class="detail-label">已签到次数</text>
+      <text class="detail-value present">{{presentCount}}</text>
+    </view>
+    <view class="detail-item">
+      <text class="detail-label">迟到次数</text>
+      <text class="detail-value late">{{lateCount}}</text>
+    </view>
+    <view class="detail-item">
+      <text class="detail-label">请假次数</text>
+      <text class="detail-value leave">{{leaveCount}}</text>
+    </view>
+    <view class="detail-item">
+      <text class="detail-label">缺勤次数</text>
+      <text class="detail-value absent">{{absentCount}}</text>
+    </view>
+  </view>
+</view>

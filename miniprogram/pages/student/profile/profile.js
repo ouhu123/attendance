@@ -6,6 +6,7 @@ Page({
       studentNo: '未设置学号',
       phone: '未设置电话',
       college: '未设置学院',
+      className: '未设置班级',
       avatar: ''
     }
   },
@@ -69,6 +70,7 @@ Page({
               studentNo: userData.studentNo || '未设置学号',
               phone: userData.phone || '未设置电话',
               college: userData.college || '未设置学院',
+              className: userData.className || '未设置班级',
               avatar: userData.avatar || ''
             }
           });

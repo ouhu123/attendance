@@ -636,6 +636,124 @@ public class AttendanceServiceImpl implements AttendanceService {
         
         return stats;
     }
+    
+    @Override
+    /**
+     * 根据学生ID和课程名称获取学生的出勤统计信息
+     * @param studentId 学生ID
+     * @param courseName 课程名称
+     * @return 包含出勤统计信息的Map，包括总次数、出勤次数、迟到次数、请假次数、缺勤次数和出勤率
+     */
+    public Map<String, Object> getAttendanceStatsByStudentAndCourse(Long studentId, String courseName) {
+        // 创建用于存储结果Map
+        Map<String, Object> result = new HashMap<>();
+
+        // 使用新增的Mapper方法获取统计数据
+        Map<String, Object> stats = attendanceRecordMapper.selectStatsByStudentIdAndCourseName(
+            studentId,
+            courseName
+        );
+
+        // 确保统计数据不为空
+        if (stats == null) {
+            stats = new HashMap<>();
+            stats.put("attendanceCount", 0);
+            stats.put("lateCount", 0);
+            stats.put("leaveCount", 0);
+            stats.put("absentCount", 0);
+            stats.put("totalCount", 0);
+        }
+
+        // 计算出勤率
+        // 使用更安全的方式获取统计数据，避免空指针异常
+        int totalCount = 0;
+        int attendanceCount = 0;
+        int lateCount = 0;
+        int leaveCount = 0;
+        int absentCount = 0;
+        
+        // 安全获取总次数
+        Object totalCountObj = stats.get("totalCount");
+        if (totalCountObj != null) {
+            if (totalCountObj instanceof Number) {
+                totalCount = ((Number) totalCountObj).intValue();
+            } else {
+                try {
+                    totalCount = Integer.parseInt(totalCountObj.toString());
+                } catch (NumberFormatException e) {
+                    totalCount = 0;
+                }
+            }
+        }
+        
+        // 安全获取出勤次数
+        Object attendanceCountObj = stats.get("attendanceCount");
+        if (attendanceCountObj != null) {
+            if (attendanceCountObj instanceof Number) {
+                attendanceCount = ((Number) attendanceCountObj).intValue();
+            } else {
+                try {
+                    attendanceCount = Integer.parseInt(attendanceCountObj.toString());
+                } catch (NumberFormatException e) {
+                    attendanceCount = 0;
+                }
+            }
+        }
+        
+        // 安全获取迟到次数
+        Object lateCountObj = stats.get("lateCount");
+        if (lateCountObj != null) {
+            if (lateCountObj instanceof Number) {
+                lateCount = ((Number) lateCountObj).intValue();
+            } else {
+                try {
+                    lateCount = Integer.parseInt(lateCountObj.toString());
+                } catch (NumberFormatException e) {
+                    lateCount = 0;
+                }
+            }
+        }
+        
+        // 安全获取请假次数
+        Object leaveCountObj = stats.get("leaveCount");
+        if (leaveCountObj != null) {
+            if (leaveCountObj instanceof Number) {
+                leaveCount = ((Number) leaveCountObj).intValue();
+            } else {
+                try {
+                    leaveCount = Integer.parseInt(leaveCountObj.toString());
+                } catch (NumberFormatException e) {
+                    leaveCount = 0;
+                }
+            }
+        }
+        
+        // 安全获取缺勤次数
+        Object absentCountObj = stats.get("absentCount");
+        if (absentCountObj != null) {
+            if (absentCountObj instanceof Number) {
+                absentCount = ((Number) absentCountObj).intValue();
+            } else {
+                try {
+                    absentCount = Integer.parseInt(absentCountObj.toString());
+                } catch (NumberFormatException e) {
+                    absentCount = 0;
+                }
+            }
+        }
+        
+        double attendanceRate = totalCount > 0 ? (double) attendanceCount / totalCount * 100 : 0;
+
+        // 构建返回结果
+        result.put("totalCount", totalCount);
+        result.put("attendanceCount", attendanceCount);
+        result.put("lateCount", lateCount);
+        result.put("leaveCount", leaveCount);
+        result.put("absentCount", absentCount);
+        result.put("attendanceRate", String.format("%.2f%%", attendanceRate));
+
+        return result;
+    }
 
     @Override
     public List<Map<String, Object>> getAttendanceRecordsByStudent(Long studentId, Integer year, Integer month) {

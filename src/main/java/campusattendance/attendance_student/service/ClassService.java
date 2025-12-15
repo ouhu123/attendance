@@ -69,4 +69,11 @@ public interface ClassService {
      * @return 课程列表
      */
     List<Map<String, Object>> getCoursesByClassId(Long classId);
+    
+    /**
+     * 根据学生ID查询其所在班级信息
+     * @param studentId 学生ID
+     * @return 班级详情信息
+     */
+    List<Map<String, Object>> getClassDetailsByStudentId(Long studentId);
 }

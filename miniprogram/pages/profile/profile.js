@@ -118,49 +118,84 @@ Page({
   },
 
   // 学生端：加载学生个人信息
-  loadStudentInfo: function() {
-    // 获取token
+  loadStudentInfo: function(callback) {
+    wx.showLoading({
+      title: '加载中...',
+    });
+
+    // 从本地存储获取token
     const token = wx.getStorageSync('token');
-    
+    if (!token) {
+      wx.hideLoading();
+      wx.showToast({
+        title: '请先登录',
+        icon: 'none'
+      });
+      wx.redirectTo({
+        url: '/pages/index/index',
+      });
+      return;
+    }
+
+    // 发送请求获取用户信息
     wx.request({
-      url: 'http://localhost:8090/api/user/student/info',
+      url: 'http://localhost:8090/api/user/current',
       method: 'GET',
       header: {
         'Authorization': `Bearer ${token}`
       },
       success: (res) => {
-        if (res.data.code === 200) {
+        if (res.data.code === 200 && res.data.data) {
           // 更新用户信息
-          const updatedUserInfo = { ...this.data.userInfo, ...res.data.data };
+          const userData = res.data.data;
+          const updatedUserInfo = {
+            ...this.data.userInfo,
+            name: userData.name || '未设置姓名',
+            studentNo: userData.studentNo || '未设置学号',
+            phone: userData.phone || '未设置电话',
+            college: userData.college || '未设置学院',
+            className: userData.className || '未设置班级',
+            avatar: userData.avatar || ''
+          };
           this.setData({
             userInfo: updatedUserInfo
           });
           
           // 保存到本地存储
           wx.setStorageSync('userInfo', updatedUserInfo);
+          
+          wx.hideLoading();
+          if (callback) callback();
+        } else {
+          wx.hideLoading();
+          wx.showToast({
+            title: '登录已过期，请重新登录',
+            icon: 'none'
+          });
+          // 跳转到登录页面
+          setTimeout(() => {
+            wx.redirectTo({
+              url: '/pages/index/index',
+            });
+          }, 2000);
         }
       },
       fail: (err) => {
-        console.error('加载学生信息失败:', err);
+        console.error('获取用户信息失败:', err);
+        wx.hideLoading();
+        wx.showToast({
+          title: '网络错误，请稍后重试',
+          icon: 'none'
+        });
+        if (callback) callback();
       }
     });
   },
 
 
 
-  // 学生端：查看课程表
-  viewCourseSchedule: function() {
-    wx.navigateTo({
-      url: '../student/course-schedule/course-schedule'
-    });
-  },
+  // 学生端：课程表和成绩查询功能已删除
 
-  // 学生端：查看成绩报告
-  viewGradeReport: function() {
-    wx.navigateTo({
-      url: '../student/grade-report/grade-report'
-    });
-  },
 
   // 修改密码
   changePassword: function() {

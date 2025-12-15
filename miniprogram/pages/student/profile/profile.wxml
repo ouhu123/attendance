@@ -41,7 +41,11 @@
     
     <view class="info-item">
       <text class="info-label">学院</text>
-      <text class="info-value">{{userInfo.college || '信息科学与工程学院'}}</text>
+      <text class="info-value">{{userInfo.college || '未设置'}}</text>
+    </view>
+    <view class="info-item">
+      <text class="info-label">班级</text>
+      <text class="info-value">{{userInfo.className || '未设置'}}</text>
     </view>
     
     <view class="info-item">

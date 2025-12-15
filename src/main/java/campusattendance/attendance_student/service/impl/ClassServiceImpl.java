@@ -198,4 +198,27 @@ public class ClassServiceImpl implements ClassService {
         }
         return classMapper.selectCoursesByClassId(classId);
     }
+    
+    @Override
+    public List<Map<String, Object>> getClassDetailsByStudentId(Long studentId) {
+        if (studentId == null) {
+            return List.of();
+        }
+        List<Map<String, Object>> classDetails = classMapper.selectClassDetailsByStudentId(studentId);
+        
+        // 确保每个班级都有 courseNames 字段，即使为空
+        for (Map<String, Object> classDetail : classDetails) {
+            // 如果 courseNames 不存在或为 null，设置为空字符串
+            if (!classDetail.containsKey("courseNames") || classDetail.get("courseNames") == null) {
+                classDetail.put("courseNames", "");
+            }
+            // 确保 courseNames 是字符串类型
+            Object courseNames = classDetail.get("courseNames");
+            if (courseNames != null && !(courseNames instanceof String)) {
+                classDetail.put("courseNames", String.valueOf(courseNames));
+            }
+        }
+        
+        return classDetails;
+    }
 }

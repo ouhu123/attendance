@@ -225,24 +225,26 @@ Page({
           data: postData,
           success: (res) => {
             if (res.data.code === 200) {
-              wx.showToast({
-                title: '签到成功',
-                icon: 'success',
-                duration: 2000
-              });
-              // 存储签到成功状态到本地存储
-              wx.setStorageSync('justSigned', true);
-              // 签到成功后返回主页面
-              setTimeout(() => {
-                wx.navigateBack();
-              }, 2000);
-            } else {
-              wx.showToast({
-                title: res.data.message || '签到失败',
-                icon: 'none',
-                duration: 2000
-              });
-            }
+          wx.showToast({
+            title: '签到成功',
+            icon: 'success',
+            duration: 2000
+          });
+          // 存储签到成功状态到本地存储
+          wx.setStorageSync('justSigned', true);
+          // 签到成功后直接跳转到学生主页面
+          setTimeout(() => {
+            wx.redirectTo({
+              url: '/pages/student/main/main'
+            });
+          }, 2000);
+        } else {
+          wx.showToast({
+            title: res.data.message || '签到失败',
+            icon: 'none',
+            duration: 2000
+          });
+        }
           },
           fail: () => {
             wx.showToast({

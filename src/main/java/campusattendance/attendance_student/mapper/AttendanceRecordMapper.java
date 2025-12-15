@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 签到记录Mapper
@@ -71,4 +72,13 @@ public interface AttendanceRecordMapper {
      * @return 签到记录列表
      */
     List<AttendanceRecord> selectByStudentIdAndMonth(@Param("studentId") Long studentId, @Param("year") Integer year, @Param("month") Integer month);
+
+/**
+ * 根据学生ID和课程名称查询统计数据
+ *
+ * @param studentId 学生ID，用于指定查询的学生
+ * @param courseName 课程名称，用于指定查询的课程
+ * @return 返回一个Map集合，包含查询到的统计数据，键为String类型，值为Object类型
+ */
+ Map<String, Object> selectStatsByStudentIdAndCourseName(@Param("studentId") Long studentId, @Param("courseName") String courseName);
 }

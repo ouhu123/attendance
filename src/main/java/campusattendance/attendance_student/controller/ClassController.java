@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -88,16 +89,37 @@ public class ClassController {
     }
     
     /**
-     * 获取班级详情（包含学生数量和课程数量）
-     * @return 班级详情列表
+     * 获取班级详情
+     * @return 班级详情
      */
     @GetMapping("/details")
     public Map<String, Object> getClassDetails() {
         List<Map<String, Object>> classDetails = classService.getClassDetails();
-        Map<String, Object> result = new java.util.HashMap<>();
+        Map<String, Object> result = new HashMap<>();
         result.put("code", 200);
-        result.put("message", "success");
+        result.put("message", "获取班级详情成功");
         result.put("data", classDetails);
+        return result;
+    }
+    
+    /**
+     * 根据学生ID获取班级列表
+     * @param studentId 学生ID
+     * @return 班级列表
+     */
+    @GetMapping("/student/list")
+    public Map<String, Object> getClassListByStudentId(@RequestParam("studentId") Long studentId) {
+        Map<String, Object> result = new HashMap<>();
+        try {
+            List<Map<String, Object>> classDetails = classService.getClassDetailsByStudentId(studentId);
+            result.put("code", 200);
+            result.put("message", "获取学生班级列表成功");
+            result.put("data", classDetails);
+        } catch (Exception e) {
+            result.put("code", 500);
+            result.put("message", "获取学生班级列表失败：" + e.getMessage());
+            result.put("data", List.of());
+        }
         return result;
     }
     

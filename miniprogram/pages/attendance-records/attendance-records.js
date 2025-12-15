@@ -12,6 +12,7 @@ Page({
     // 学生端月份选择
     currentMonth: new Date().getMonth() + 1,
     currentYear: new Date().getFullYear()
+
   },
 
   onLoad: function() {
@@ -133,6 +134,11 @@ Page({
     const token = wx.getStorageSync('token');
     const userInfo = this.data.userInfo;
     
+    // 获取当前月份信息，确保year和month始终有值
+    const now = new Date();
+    const year = this.data.currentYear || now.getFullYear();
+    const month = this.data.currentMonth || (now.getMonth() + 1);
+    
     wx.showLoading({
       title: '加载中...'
     });
@@ -146,8 +152,8 @@ Page({
       data: {
         studentId: Number(userInfo.userId),
         studentNo: userInfo.username || '',
-        year: this.data.currentYear,
-        month: this.data.currentMonth
+        year: year,
+        month: month
       },
       success: (res) => {
         if (res.data.code === 200) {
@@ -296,6 +302,8 @@ Page({
       }
     });
   },
+
+
 
   // 学生端：上一月
   prevMonth: function() {
