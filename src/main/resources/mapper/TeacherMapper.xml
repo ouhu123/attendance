@@ -11,4 +11,10 @@
         SELECT * FROM teacher WHERE id = #{teacherId}
     </select>
     
+    <update id="updatePassword" parameterType="map">
+        UPDATE teacher 
+        SET password = #{password}, update_time = NOW() 
+        WHERE id = #{teacherId}
+    </update>
+    
 </mapper>

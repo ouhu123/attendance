@@ -111,13 +111,75 @@ public class AttendanceController {
      * @param teacherId 教师ID
      * @return 统计数据
      */
-    @GetMapping("/teacher/stats")
+    @GetMapping({"/teacher/stats", "/teacher/statistics"})
     public Map<String, Object> getAttendanceStatsByTeacher(@RequestParam Long teacherId) {
         Map<String, Object> stats = attendanceService.getAttendanceStatsByTeacher(teacherId);
         Map<String, Object> result = new HashMap<>();
         result.put("code", 200);
         result.put("message", "success");
         result.put("data", stats);
+        return result;
+    }
+    
+    /**
+     * 获取学生最近签到记录
+     * @param studentId 学生ID
+     * @return 签到记录列表
+     */
+    @GetMapping("/student/recent")
+    public Map<String, Object> getRecentAttendanceByStudent(@RequestParam Long studentId) {
+        List<Map<String, Object>> recentAttendance = attendanceService.getRecentAttendanceByStudent(studentId);
+        Map<String, Object> result = new HashMap<>();
+        result.put("code", 200);
+        result.put("message", "success");
+        result.put("data", recentAttendance);
+        return result;
+    }
+    
+    /**
+     * 获取学生当前进行中的签到
+     * @param studentId 学生ID
+     * @return 当前签到信息
+     */
+    @GetMapping("/student/current")
+    public Map<String, Object> getCurrentAttendanceByStudent(@RequestParam Long studentId) {
+        Map<String, Object> currentAttendance = attendanceService.getCurrentAttendanceByStudent(studentId);
+        Map<String, Object> result = new HashMap<>();
+        result.put("code", 200);
+        result.put("message", "success");
+        result.put("data", currentAttendance);
+        return result;
+    }
+    
+    /**
+     * 获取学生签到统计数据
+     * @param studentId 学生ID
+     * @return 统计数据
+     */
+    @GetMapping({"/student/stats", "/student/statistics"})
+    public Map<String, Object> getAttendanceStatsByStudent(@RequestParam Long studentId) {
+        Map<String, Object> stats = attendanceService.getAttendanceStatsByStudent(studentId);
+        Map<String, Object> result = new HashMap<>();
+        result.put("code", 200);
+        result.put("message", "success");
+        result.put("data", stats);
+        return result;
+    }
+    
+    /**
+     * 获取学生签到记录
+     * @param studentId 学生ID
+     * @param year 年份
+     * @param month 月份
+     * @return 签到记录列表
+     */
+    @GetMapping("/student/records")
+    public Map<String, Object> getAttendanceRecordsByStudent(@RequestParam Long studentId, @RequestParam(required = false) Integer year, @RequestParam(required = false) Integer month) {
+        List<Map<String, Object>> records = attendanceService.getAttendanceRecordsByStudent(studentId, year, month);
+        Map<String, Object> result = new HashMap<>();
+        result.put("code", 200);
+        result.put("message", "success");
+        result.put("data", records);
         return result;
     }
 

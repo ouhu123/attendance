@@ -19,4 +19,10 @@
         SELECT COUNT(*) FROM student WHERE class_id = #{classId}
     </select>
     
+    <update id="updatePassword" parameterType="map">
+        UPDATE student 
+        SET password = #{password}, update_time = NOW() 
+        WHERE id = #{studentId}
+    </update>
+    
 </mapper>

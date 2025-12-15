@@ -8,11 +8,13 @@ Page({
   },
 
   onLoad: function(options) {
-    if (options.sessionId) {
+    // 兼容两种参数名：id 和 sessionId
+    const sessionId = options.id || options.sessionId;
+    if (sessionId) {
       this.setData({
-        sessionId: options.sessionId
+        sessionId: sessionId
       });
-      this.loadAttendanceDetail(options.sessionId);
+      this.loadAttendanceDetail(sessionId);
     } else {
       wx.showToast({
         title: '参数错误',

@@ -69,7 +69,7 @@ Page({
     // 这里应该调用实际的API获取当前签到信息
     // 暂时使用模拟数据
     wx.request({
-      url: 'http://localhost:8090/api/attendance/student/current',
+      url: 'http://localhost:8090/api/attendance/student/my-current',
       method: 'GET',
       header: {
         'Authorization': `Bearer ${token}`
@@ -118,8 +118,9 @@ Page({
             remainingSeconds: 300,
             remainingMinutes: '05',
             remainingSecondsDisplay: '00',
-            // 模拟数据中默认设置为未签到
-            isSigned: false
+            // 模拟数据中默认设置为未签到，默认签到类型为二维码签到
+            isSigned: false,
+            attendanceType: 1
           }
         });
       }
@@ -139,7 +140,7 @@ Page({
     // 这里应该调用实际的API获取最近签到记录
     // 暂时使用模拟数据
     wx.request({
-      url: 'http://localhost:8090/api/attendance/student/recent',
+      url: 'http://localhost:8090/api/attendance/student/my-recent',
       method: 'GET',
       header: {
         'Authorization': `Bearer ${token}`
@@ -201,7 +202,7 @@ Page({
     // 这里应该调用实际的API获取统计数据
     // 暂时使用模拟数据
     wx.request({
-      url: 'http://localhost:8090/api/attendance/student/statistics',
+      url: 'http://localhost:8090/api/attendance/student/my-statistics',
       method: 'GET',
       header: {
         'Authorization': `Bearer ${token}`
@@ -279,7 +280,8 @@ Page({
     
     // 获取当前签到的sessionCode和签到类型
     const sessionCode = this.data.currentAttendance.sessionCode;
-    const attendanceType = this.data.currentAttendance.attendanceType;
+    // 添加attendanceType字段存在性检查，默认值为1（二维码签到）
+    const attendanceType = this.data.currentAttendance.attendanceType || 1;
     
     console.log('directSignIn - 当前签到信息:', this.data.currentAttendance);
     console.log('directSignIn - 签到类型:', attendanceType);

@@ -31,4 +31,10 @@ public class StudentServiceImpl implements StudentService {
     public List<Student> getStudentsByClassId(Long classId) {
         return studentMapper.selectByClassId(classId);
     }
+    
+    @Override
+    public boolean updatePassword(Long studentId, String password) {
+        int result = studentMapper.updatePassword(studentId, password);
+        return result > 0;
+    }
 }

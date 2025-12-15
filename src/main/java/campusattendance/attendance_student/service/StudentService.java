@@ -29,4 +29,12 @@ public interface StudentService {
      * @return 学生列表
      */
     List<Student> getStudentsByClassId(Long classId);
+    
+    /**
+     * 更新学生密码
+     * @param studentId 学生ID
+     * @param password 新密码
+     * @return 是否更新成功
+     */
+    boolean updatePassword(Long studentId, String password);
 }

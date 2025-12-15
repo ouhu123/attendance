@@ -24,4 +24,10 @@ public class TeacherServiceImpl implements TeacherService {
     public Teacher findById(Long teacherId) {
         return teacherMapper.findById(teacherId);
     }
+    
+    @Override
+    public boolean updatePassword(Long teacherId, String password) {
+        int result = teacherMapper.updatePassword(teacherId, password);
+        return result > 0;
+    }
 }

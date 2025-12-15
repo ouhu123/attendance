@@ -127,6 +127,13 @@ Page({
     });
   },
 
+  // 修改密码
+  changePassword: function() {
+    wx.navigateTo({
+      url: '../change-password/change-password',
+    })
+  },
+  
   // 退出登录
   logout: function() {
     // 显示确认对话框

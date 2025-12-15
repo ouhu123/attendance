@@ -1,0 +1,169 @@
+<!-- 共用首页 - 根据用户角色渲染不同内容 -->
+<view class="teacher-main-container">
+
+<!-- 顶部装饰 -->
+<view class="top-decoration">
+  <view class="decoration-circle circle1"></view>
+  <view class="decoration-circle circle2"></view>
+  <view class="decoration-circle circle3"></view>
+</view>
+
+<!-- 顶部导航栏 -->
+<view class="top-nav">
+  <view class="nav-left">
+    <view class="logout-btn" bindtap="logout">退出</view>
+    <text class="welcome-text">欢迎回来，{{userInfo.name || '老师'}}</text>
+  </view>
+  <view class="nav-right">
+    <view class="avatar" bindtap="goToProfile"></view>
+  </view>
+</view>
+
+<!-- ================= 教师端 ================= -->
+<view wx:if="{{userInfo.role === 'teacher'}}">
+
+  <view class="quick-actions">
+    <view class="action-card" bindtap="initiateAttendance">
+      <view class="card-icon icon-start"></view>
+      <text class="card-title">发起签到</text>
+      <text class="card-desc">开始新的课堂签到</text>
+    </view>
+  </view>
+
+  <view class="recent-attendance">
+    <view class="section-title">
+      <text class="title-text">今日签到</text>
+    </view>
+
+    <view class="attendance-list">
+      <block wx:if="{{recentAttendances.length > 0}}">
+        <view class="attendance-item"
+              wx:for="{{recentAttendances}}"
+              wx:key="id">
+          <view class="item-left">
+            <text class="class-name">{{item.className}}</text>
+            <text class="course-info">课程：{{item.courseName}}</text>
+          </view>
+          <view class="item-right">
+            <text class="attendance-status" wx:if="{{item.status === '进行中'}}" style="color: #FF9800;">{{item.status}}{{item.countdownText ? '(' + item.countdownText + ')' : ''}}</text>
+            <text class="attendance-status" wx:elif="{{item.status === '已结束'}}" style="color: #9E9E9E;">{{item.status}}</text>
+            <text class="attendance-status" wx:else style="color: #2196F3;">{{item.status}}</text>
+            <button size="mini"
+                    class="detail-btn"
+                    bindtap="viewAttendanceDetail"
+                    data-id="{{item.id}}">
+              查看详情
+            </button>
+          </view>
+        </view>
+      </block>
+
+      <block wx:else>
+        <view style="text-align:center;color:#999;padding:40rpx 0;">
+          暂无签到记录
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <view class="statistics">
+    <view class="section-title">
+      <text class="title-text">教学统计</text>
+    </view>
+    <view class="stats-grid">
+      <view class="stat-item">
+        <text class="stat-number">{{stats.totalCourses || 0}}</text>
+        <text class="stat-label">总课程数</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-number">{{stats.todayAttendance || 0}}</text>
+        <text class="stat-label">今日签到</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-number">{{stats.averageAttendanceRate || '0.0%'}}</text>
+        <text class="stat-label">平均出勤率</text>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- ================= 学生端 ================= -->
+<view wx:elif="{{userInfo.role === 'student'}}" class="student-content">
+
+  <!-- 快速操作 -->
+  <view class="quick-actions">
+    <view class="action-card" bindtap="onUserClickSign">
+      <view class="card-icon icon-sign"></view>
+      <text class="card-title">立即签到</text>
+      <text class="card-desc">快速进行当前签到</text>
+    </view>
+  </view>
+
+  <!-- 当前签到 -->
+  <view class="attendance-info">
+    <view class="section-title">
+      <text class="title-text">当前签到</text>
+    </view>
+
+    <view wx:if="{{currentAttendance}}" class="current-attendance">
+      <text class="attendance-course">{{currentAttendance.courseName}}</text>
+      <text class="attendance-class">{{currentAttendance.className}}</text>
+      <text class="attendance-time">开始时间：{{currentAttendance.startTime}}</text>
+      <text class="attendance-status">
+        状态：{{currentAttendance.status}}
+        <text wx:if="{{currentAttendance.status === '进行中' && countdownTime !== null}}" class="countdown">
+          ({{countdownTime > 0 ? countdownTime + '秒' : '已结束'}})
+        </text>
+      </text>
+
+
+    </view>
+
+    <view wx:else class="no-attendance">
+      当前没有进行中的签到
+    </view>
+  </view>
+
+
+</view>
+
+<!-- 未登录 -->
+<view wx:else class="not-logged-in">
+  <text class="login-prompt">请先登录</text>
+  <button class="login-btn" bindtap="goToLogin">去登录</button>
+</view>
+
+<!-- ================= 手势签到弹窗 ================= -->
+<view wx:if="{{showGestureModal && userInfo.role === 'student'}}"
+      class="gesture-modal"
+      catchtap="hideGestureModal">
+
+  <view class="gesture-modal-content" catchtap="stopPropagation">
+    <view class="modal-title">自定义手势签到</view>
+    <view class="modal-tip">请绘制解锁图案</view>
+
+    <view class="gesture-grid-student gesture-grid-modal"
+          bindtouchstart="onGestureStart"
+          bindtouchmove="onGestureMove"
+          bindtouchend="onGestureEnd">
+
+      <view wx:for="{{gesturePoints}}"
+            wx:key="id"
+            class="gesture-point-modal"
+            style="top:{{item.top}}%;left:{{item.left}}%;">
+      </view>
+
+      <canvas type="2d"
+              id="gesture-canvas-student"
+              class="gesture-canvas-modal">
+      </canvas>
+    </view>
+
+    <view class="modal-buttons">
+      <button class="modal-btn-reset" bindtap="resetGesture">重置</button>
+      <button class="modal-btn-confirm" bindtap="confirmGestureSign">确认</button>
+    </view>
+  </view>
+</view>
+
+</view>

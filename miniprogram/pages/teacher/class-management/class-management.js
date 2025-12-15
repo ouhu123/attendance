@@ -18,9 +18,18 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-    // 从本地存储获取教师信息
+    // 从本地存储获取用户信息
     const userInfo = wx.getStorageSync('userInfo')
     if (userInfo) {
+      // 检查用户角色
+      if (userInfo.role !== 'teacher') {
+        wx.showToast({
+          title: '该功能仅对教师开放',
+          icon: 'none'
+        })
+        return
+      }
+      
       this.setData({
         teacherInfo: userInfo
       })
@@ -29,7 +38,7 @@ Page({
       this.loadClassList()
     } else {
       wx.showToast({
-        title: '教师信息获取失败',
+        title: '用户信息获取失败',
         icon: 'none'
       })
     }
@@ -73,6 +82,8 @@ Page({
           const classList = res.data.data.map((item, index) => {
             // 调试日志：打印单个班级数据的所有属性和值
             console.log(`班级${index + 1} - 所有属性:`, Object.keys(item));
+            console.log(`班级${index + 1} - id:`, item.id, '类型:', typeof item.id);
+            console.log(`班级${index + 1} - classId:`, item.classId, '类型:', typeof item.classId);
             console.log(`班级${index + 1} - courseCount:`, item.courseCount);
             console.log(`班级${index + 1} - courseNames:`, item.courseNames);
             console.log(`班级${index + 1} - courseNames类型:`, typeof item.courseNames);
@@ -226,11 +237,15 @@ Page({
     // 微信小程序中，data-class-id 会被转换为 dataset.classId（驼峰命名）
     const classId = e.currentTarget.dataset.classId;
     console.log('班级ID:', classId, '数据类型:', typeof classId);
+    // 打印dataset中的所有数据
+    console.log('dataset中的所有数据:', e.currentTarget.dataset);
     
     if (classId) {
       wx.navigateTo({
-        url: `/pages/teacher/class-details/class-details?classId=${classId}`,
+        url: `/pages/class-details/class-details?classId=${classId}`,
         success: function() {
+
+
           console.log('页面跳转成功');
         },
         fail: function(err) {

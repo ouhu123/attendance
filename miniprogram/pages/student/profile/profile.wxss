@@ -1,6 +1,6 @@
 /* 基础样式 */
 .page {
-  padding: 0;
+  padding: 0 0 120rpx;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   position: relative;
   min-height: 100vh;
@@ -60,23 +60,24 @@
 .nav-left {
   display: flex;
   align-items: center;
-  gap: 20rpx;
+  justify-content: center;
 }
 
 .logout-btn {
-  padding: 12rpx 24rpx;
   font-size: 28rpx;
-  border: 1rpx solid rgba(255, 255, 255, 0.8);
-  border-radius: 50rpx;
-  color: #fff;
-  background-color: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
+  color: #1976D2;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 10rpx 20rpx;
+  border-radius: 20rpx;
+  border: 2rpx solid #1976D2;
+  cursor: pointer;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.1);
+  margin-right: 20rpx;
 }
 
 .logout-btn:active {
   transform: scale(0.95);
-  background-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.1);
 }
 
 .welcome-text {
@@ -91,6 +92,10 @@
   align-items: center;
 }
 
+.avatar-container {
+  margin-left: 20rpx;
+}
+
 .avatar {
   width: 80rpx;
   height: 80rpx;
@@ -98,6 +103,26 @@
   border: 2rpx solid rgba(255, 255, 255, 0.8);
   background-color: rgba(255, 255, 255, 0.9);
   box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.1);
+}
+
+/* 默认头像样式 */
+.avatar-default {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  border: 2rpx solid rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40rpx;
+  color: #1976D2;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.avatar-default::after {
+  content: '👤';
 }
 
 /* 个人信息卡片 */
@@ -124,6 +149,25 @@
   border: 4rpx solid #fff;
   background-color: #fff;
   margin-right: 32rpx;
+}
+
+/* 个人信息卡片默认头像样式 */
+.profile-avatar-default {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 50%;
+  border: 4rpx solid #fff;
+  margin-right: 32rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 80rpx;
+  color: #fff;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.profile-avatar-default::after {
+  content: '👤';
 }
 
 .profile-info {

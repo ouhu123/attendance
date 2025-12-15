@@ -130,4 +130,19 @@ public class ClassController {
         result.put("data", students);
         return result;
     }
+    
+    /**
+     * 根据班级ID获取课程列表
+     * @param classId 班级ID
+     * @return 课程列表
+     */
+    @GetMapping("/courses")
+    public Map<String, Object> getCoursesByClassId(@RequestParam Long classId) {
+        List<Map<String, Object>> courses = classService.getCoursesByClassId(classId);
+        Map<String, Object> result = new java.util.HashMap<>();
+        result.put("code", 200);
+        result.put("message", "success");
+        result.put("data", courses);
+        return result;
+    }
 }

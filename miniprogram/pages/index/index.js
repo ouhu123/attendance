@@ -113,17 +113,11 @@ Page({
           wx.setStorageSync('userInfo', res.data.data)
           wx.setStorageSync('token', res.data.data.token)
           
-          // 根据用户类型跳转到对应主页面
-          if (userType === 'teacher') {
-            // 教师用户跳转到教师主页面
+          // 根据用户类型跳转到对应的首页
+          if (userType === 'teacher' || userType === 'student') {
             wx.switchTab({
-              url: '../teacher/main/main'
-            })
-          } else {
-            // 学生用户跳转到学生主页面
-            wx.redirectTo({
-              url: '../student/main/main'
-            })
+              url: '../main/main'
+            });
           }
         } else {
           // 登录失败

@@ -20,4 +20,12 @@ public interface TeacherService {
      * @return 教师信息
      */
     Teacher findById(Long teacherId);
+    
+    /**
+     * 更新教师密码
+     * @param teacherId 教师ID
+     * @param password 新密码
+     * @return 是否更新成功
+     */
+    boolean updatePassword(Long teacherId, String password);
 }

@@ -1,4 +1,5 @@
 {
-  "navigationBarTitleText": "教师首页",
-  "enablePullDownRefresh": true
+  "navigationBarTitleText": "教师端首页",
+  "navigationBarBackgroundColor": "#007aff",
+  "navigationBarTextStyle": "white"
 }

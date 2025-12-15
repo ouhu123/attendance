@@ -34,7 +34,7 @@ public class StudentController {
      * @param studentNo 学生编号
      * @return 当前签到信息
      */
-    @GetMapping("/current")
+    @GetMapping("/my-current")
     public Map<String, Object> getCurrentAttendance(
             @RequestParam Long studentId,
             @RequestParam(required = false) String studentNo) {
@@ -52,7 +52,7 @@ public class StudentController {
      * @param studentNo 学生编号
      * @return 最近签到记录列表
      */
-    @GetMapping("/recent")
+    @GetMapping("/my-recent")
     public Map<String, Object> getRecentAttendance(
             @RequestParam Long studentId,
             @RequestParam(required = false) String studentNo) {
@@ -70,7 +70,7 @@ public class StudentController {
      * @param studentNo 学生编号
      * @return 统计数据
      */
-    @GetMapping("/statistics")
+    @GetMapping("/my-statistics")
     public Map<String, Object> getAttendanceStatistics(
             @RequestParam Long studentId,
             @RequestParam(required = false) String studentNo) {
@@ -90,7 +90,7 @@ public class StudentController {
      * @param month 月份
      * @return 签到记录列表
      */
-    @GetMapping("/records")
+    @GetMapping("/my-records")
     public Map<String, Object> getAttendanceRecords(
             @RequestParam Long studentId,
             @RequestParam(required = false) String studentNo,

@@ -3,17 +3,23 @@
     "pages/index/index",
     "pages/logs/logs",
     "pages/teacher/main/main",
-    "pages/teacher/initiate-attendance/initiate-attendance",
     "pages/teacher/attendance-records/attendance-records",
-    "pages/teacher/attendance-detail/attendance-detail",
     "pages/teacher/profile/profile",
+    "pages/teacher/initiate-attendance/initiate-attendance",
+    "pages/teacher/attendance-detail/attendance-detail",
+    "pages/teacher/change-password/change-password",
     "pages/teacher/class-management/class-management",
     "pages/teacher/class-details/class-details",
+    "pages/student/sign/sign",
+    "pages/student/location-sign/location-sign",
     "pages/student/main/main",
     "pages/student/attendance-records/attendance-records",
     "pages/student/profile/profile",
-    "pages/student/sign/sign",
-    "pages/student/location-sign/location-sign"
+    "pages/student/change-password/change-password",
+    "pages/main/main",
+    "pages/attendance-records/attendance-records",
+    "pages/profile/profile",
+    "pages/class-management/class-management"
   ],
   "window": {
     "navigationBarTextStyle": "white",
@@ -22,34 +28,25 @@
   },
   "tabBar": {
     "color": "#999999",
-    "selectedColor": "#1976D2",
+    "selectedColor": "#1A73E8",
     "backgroundColor": "#ffffff",
-    "fontSize": 24,
-    "spacing": 30,
+    "borderStyle": "black",
     "list": [
       {
-        "pagePath": "pages/teacher/main/main",
-        "text": "首页",
-        "iconPath": "",
-        "selectedIconPath": ""
+        "pagePath": "pages/main/main",
+        "text": "首页"
       },
       {
-        "pagePath": "pages/teacher/attendance-records/attendance-records",
-        "text": "签到记录",
-        "iconPath": "",
-        "selectedIconPath": ""
+        "pagePath": "pages/attendance-records/attendance-records",
+        "text": "签到记录"
       },
       {
-        "pagePath": "pages/teacher/class-management/class-management",
-        "text": "班级管理",
-        "iconPath": "",
-        "selectedIconPath": ""
+        "pagePath": "pages/class-management/class-management",
+        "text": "班级管理"
       },
       {
-        "pagePath": "pages/teacher/profile/profile",
-        "text": "个人中心",
-        "iconPath": "",
-        "selectedIconPath": ""
+        "pagePath": "pages/profile/profile",
+        "text": "个人中心"
       }
     ]
   },

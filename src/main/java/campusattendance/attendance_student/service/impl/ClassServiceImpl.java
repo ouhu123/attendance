@@ -190,4 +190,12 @@ public class ClassServiceImpl implements ClassService {
         
         return students;
     }
+    
+    @Override
+    public List<Map<String, Object>> getCoursesByClassId(Long classId) {
+        if (classId == null) {
+            return List.of();
+        }
+        return classMapper.selectCoursesByClassId(classId);
+    }
 }

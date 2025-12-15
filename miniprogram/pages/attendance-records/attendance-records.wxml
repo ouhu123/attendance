@@ -1,0 +1,85 @@
+<view class="container">
+  <!-- 顶部装饰 -->
+  <view class="top-decoration">
+    <view class="decoration-circle circle1"></view>
+    <view class="decoration-circle circle2"></view>
+    <view class="decoration-circle circle3"></view>
+  </view>
+
+  <!-- 页面标题 -->
+  <view class="title-section">
+    <text class="main-title">签到记录</text>
+    <text class="sub-title">{{userInfo.role === 'teacher' ? '教师签到管理' : '我的签到记录'}}</text>
+  </view>
+
+  <!-- 加载状态 -->
+  <view wx:if="{{loading}}" class="loading-container">
+    <view class="loading-spinner"></view>
+    <view class="loading-text">加载中...</view>
+  </view>
+
+  <!-- 无数据提示 -->
+  <view wx:elif="{{!loading && records.length === 0}}" class="no-data">
+    <view class="no-data-icon">空</view>
+    <view class="no-data-text">暂无签到记录</view>
+  </view>
+
+  <!-- 数据区域 -->
+  <view wx:else class="records-container">
+    <!-- 教师端筛选条件 -->
+    <view wx:if="{{userInfo.role === 'teacher'}}" class="filter-section">
+      <view class="filter-item">
+        <text class="filter-label">课程名称</text>
+        <input class="filter-input" placeholder="请输入课程名称" bindinput="onFilterChange" data-filter="courseName" value="{{filter.courseName}}" />
+      </view>
+      <view class="filter-item">
+        <text class="filter-label">年级</text>
+        <input class="filter-input" placeholder="请输入年级" bindinput="onFilterChange" data-filter="grade" value="{{filter.grade}}" />
+      </view>
+    </view>
+
+    <!-- 学生端月份切换 -->
+    <view wx:else class="month-selector">
+      <view class="month-nav">
+        <button class="month-btn" bindtap="prevMonth">上一月</button>
+        <view class="current-month">{{currentYear}}年{{currentMonth}}月</view>
+        <button class="month-btn" bindtap="nextMonth">下一月</button>
+      </view>
+    </view>
+
+    <!-- 数据列表 -->
+    <view class="records-list">
+      <!-- 教师端签到记录列表 -->
+      <view wx:if="{{userInfo.role === 'teacher'}}" class="teacher-records">
+        <view wx:for="{{filteredRecords}}" wx:key="id" class="record-item" bindtap="viewRecordDetail" data-id="{{item.id}}">
+          <view class="class-department-grade">{{item.department}} {{item.grade}}</view>
+          <view class="class-name">{{item.className}}</view>
+          <view class="course-info">{{item.courseName}}</view>
+          <view class="record-info">发起时间：{{item.attendanceTime}}</view>
+          <view class="record-status">签到状态：{{item.status}}</view>
+          <view class="record-attendance">
+            出勤：{{item.attendedCount || 0}} / 应到：{{item.totalStudents || 0}}
+          </view>
+          <view class="view-detail">查看详情</view>
+        </view>
+      </view>
+
+      <!-- 学生端签到记录列表 -->
+      <view wx:else class="student-records">
+        <view wx:for="{{records}}" wx:key="id" class="student-record-item">
+          <view class="student-record-header">
+            <view class="student-record-date">{{item.date}}</view>
+            <view class="student-record-status {{item.status === '正常' ? 'present' : item.status === '迟到' ? 'late' : 'absent'}}">{{item.status}}</view>
+          </view>
+          <view class="student-record-course">{{item.courseName}}</view>
+          <view class="student-record-time">签到时间：{{item.signTime}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部装饰 -->
+  <view class="bottom-decoration">
+    <view class="decoration-wave"></view>
+  </view>
+</view>

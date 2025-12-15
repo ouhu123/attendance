@@ -7,18 +7,20 @@
   <!-- 顶部导航栏 -->
   <view class="top-nav">
     <view class="nav-left">
-      <view class="logout-btn" bindtap="logout">退出</view>
       <text class="welcome-text">个人中心</text>
     </view>
-    <view class="nav-right" bindtap="goToEditProfile">
-      <image class="avatar" src="../../images/avatar.png" mode="aspectFit"></image>
+    <view class="nav-right">
+      <view class="logout-btn" bindtap="logout">退出</view>
+      <view class="avatar-container" bindtap="goToEditProfile">
+        <view class="avatar-default"></view>
+      </view>
     </view>
   </view>
   
   <!-- 个人信息卡片 -->
   <view class="profile-card">
     <view class="profile-header">
-      <image class="profile-avatar" src="../../images/avatar.png" mode="aspectFit"></image>
+      <view class="profile-avatar-default"></view>
       <view class="profile-info">
         <text class="profile-name">{{userInfo.name || '学生姓名'}}</text>
         <text class="profile-role">{{userInfo.role || '学生'}}</text>
@@ -50,6 +52,12 @@
   
   <!-- 操作菜单 -->
   <view class="menu-section">
+    <view class="menu-item" bindtap="changePassword">
+      <text class="menu-icon">🔐</text>
+      <text class="menu-text">修改密码</text>
+      <text class="menu-arrow">›</text>
+    </view>
+    
     <view class="menu-item" bindtap="goToSettings">
       <text class="menu-icon">⚙️</text>
       <text class="menu-text">设置</text>

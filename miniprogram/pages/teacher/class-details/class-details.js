@@ -6,24 +6,34 @@ Page({
   data: {
     classId: '',
     classDetails: null,
-    studentList: [],
-    courseList: []
+    studentList: []
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-    this.setData({
-      classId: options.classId
-    })
-    
-    // 加载班级详情
-    this.loadClassDetails()
-    // 加载学生列表
-    this.loadStudentList()
-    // 加载课程列表
-    this.loadCourseList()
+    console.log('options:', options);
+    console.log('options.classId:', options.classId);
+    if (options.classId) {
+      this.setData({
+        classId: options.classId
+      });
+      
+      // 加载班级详情
+      this.loadClassDetails();
+      // 加载学生列表
+      this.loadStudentList();
+    } else {
+      wx.showToast({
+        title: '参数错误',
+        icon: 'none',
+        duration: 2000
+      });
+      setTimeout(() => {
+        wx.navigateBack();
+      }, 2000);
+    }
   },
 
   /**
@@ -32,6 +42,8 @@ Page({
   loadClassDetails() {
     const that = this
     const app = getApp()
+    
+    console.log('loadClassDetails - this.data.classId:', this.data.classId, '类型:', typeof this.data.classId)
     
     wx.request({
       url: 'http://localhost:8090/api/class/detail',
@@ -100,16 +112,7 @@ Page({
     })
   },
 
-  /**
-   * 加载课程列表
-   */
-  loadCourseList() {
-    // 这里需要后端提供获取班级课程列表的接口
-    // 暂时使用模拟数据
-    this.setData({
-      courseList: []
-    })
-  },
+
 
   /**
    * 返回班级管理页面

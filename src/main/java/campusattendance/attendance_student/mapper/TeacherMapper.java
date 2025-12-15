@@ -23,4 +23,12 @@ public interface TeacherMapper {
      * @return 教师信息
      */
     Teacher findById(@Param("teacherId") Long teacherId);
+    
+    /**
+     * 更新教师密码
+     * @param teacherId 教师ID
+     * @param password 新密码
+     * @return 影响行数
+     */
+    int updatePassword(@Param("teacherId") Long teacherId, @Param("password") String password);
 }

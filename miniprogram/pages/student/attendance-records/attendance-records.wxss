@@ -1,6 +1,6 @@
 /* 基础样式 */
 .page {
-  padding: 80rpx 40rpx;
+  padding: 80rpx 40rpx 120rpx;
   font-family: 'Helvetica Neue', Arial, sans-serif;
   position: relative;
   min-height: 100vh;

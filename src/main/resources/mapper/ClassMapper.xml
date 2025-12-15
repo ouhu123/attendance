@@ -56,10 +56,12 @@
             c.grade, 
             c.department, 
             COUNT(DISTINCT s.id) as studentCount,
-            COUNT(DISTINCT cc.course_id) as courseCount
+            COUNT(DISTINCT cc.course_id) as courseCount,
+            IFNULL(GROUP_CONCAT(DISTINCT co.course_name ORDER BY co.course_name SEPARATOR ','), '') as courseNames
         FROM class c
         LEFT JOIN student s ON c.id = s.class_id
         LEFT JOIN course_class cc ON c.id = cc.class_id
+        LEFT JOIN course co ON cc.course_id = co.id
         GROUP BY c.id, c.class_name, c.grade, c.department
         ORDER BY c.create_time DESC
     </select>
@@ -72,12 +74,17 @@
             c.grade, 
             c.department, 
             COUNT(DISTINCT s.id) as studentCount,
-            COUNT(DISTINCT co.id) as courseCount,
+            COUNT(DISTINCT cc.course_id) as courseCount,
             IFNULL(GROUP_CONCAT(DISTINCT co.course_name ORDER BY co.course_name SEPARATOR ','), '') as courseNames
         FROM class c
-        INNER JOIN course_class cc ON c.id = cc.class_id
-        INNER JOIN course co ON cc.course_id = co.id AND co.teacher_id = #{teacherId}
         LEFT JOIN student s ON c.id = s.class_id
+        LEFT JOIN course_class cc ON c.id = cc.class_id
+        LEFT JOIN course co ON cc.course_id = co.id
+        WHERE EXISTS (
+            SELECT 1 FROM course co2 
+            INNER JOIN course_class cc2 ON co2.id = cc2.course_id 
+            WHERE cc2.class_id = c.id AND co2.teacher_id = #{teacherId}
+        )
         GROUP BY c.id, c.class_name, c.grade, c.department
         ORDER BY c.create_time DESC
     </select>
@@ -97,6 +104,19 @@
         WHERE s.class_id = #{classId}
         GROUP BY s.id, s.student_no, s.name
         ORDER BY s.student_no
+    </select>
+    
+    <!-- 根据班级ID查询班级课程列表 -->
+    <select id="selectCoursesByClassId" parameterType="java.lang.Long" resultType="java.util.Map">
+        SELECT 
+            co.id, 
+            co.course_name as courseName,
+            co.credit, 
+            co.description
+        FROM course co
+        LEFT JOIN course_class cc ON co.id = cc.course_id
+        WHERE cc.class_id = #{classId}
+        ORDER BY co.course_name
     </select>
     
     <!-- 根据班级名称查询班级ID -->

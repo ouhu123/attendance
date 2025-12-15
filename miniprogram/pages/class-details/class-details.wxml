@@ -1,0 +1,61 @@
+<!--pages/class-details/class-details.wxml-->
+<view class="class-details-container">
+  <view class="header">
+    <view class="back-btn" bindtap="goBack">
+      <text class="back-icon">←</text>
+    </view>
+    <text class="page-title">班级详情</text>
+  </view>
+  
+  <view class="class-info-section">
+    <view class="class-card" wx:if="{{classDetails}}">
+      <text class="class-name">{{classDetails.className}}</text>
+      <view class="class-meta">
+        <text class="meta-item">{{classDetails.department}}</text>
+        <text class="meta-item">{{classDetails.grade}}</text>
+      </view>
+    </view>
+  </view>
+  
+  <view class="section">
+    <text class="section-title">学生列表</text>
+    <view class="student-list">
+      <!-- 学生列表项 -->
+      <block wx:if="{{studentList.length > 0}}">
+        <view wx:for="{{studentList}}" wx:key="id" wx:for-item="student" class="student-item">
+          <view class="student-info">
+            <view class="student-name-row">
+              <text class="student-name">{{student.studentName}}</text>
+              <text class="student-no">{{student.studentNo}}</text>
+            </view>
+            <view class="attendance-stats">
+              <view class="stat-item">
+                <text class="stat-label">签到：</text>
+                <text class="stat-value attendance">{{student.attendanceCount || 0}}</text>
+              </view>
+              <view class="stat-item">
+                <text class="stat-label">迟到：</text>
+                <text class="stat-value late">{{student.lateCount || 0}}</text>
+              </view>
+              <view class="stat-item">
+                <text class="stat-label">请假：</text>
+                <text class="stat-value leave">{{student.leaveCount || 0}}</text>
+              </view>
+              <view class="stat-item">
+                <text class="stat-label">缺勤：</text>
+                <text class="stat-value absent">{{student.absentCount || 0}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </block>
+      
+      <!-- 空状态 -->
+      <view class="empty-state" wx:else>
+        <text>暂无学生信息</text>
+      </view>
+    </view>
+  </view>
+  
+
+</view>

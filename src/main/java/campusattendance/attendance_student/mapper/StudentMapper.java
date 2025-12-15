@@ -39,4 +39,12 @@ public interface StudentMapper {
      * @return 学生总数
      */
     int countByClassId(@Param("classId") Long classId);
+    
+    /**
+     * 更新学生密码
+     * @param studentId 学生ID
+     * @param password 新密码
+     * @return 影响行数
+     */
+    int updatePassword(@Param("studentId") Long studentId, @Param("password") String password);
 }
