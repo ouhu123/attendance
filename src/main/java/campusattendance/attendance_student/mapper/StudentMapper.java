@@ -47,4 +47,12 @@ public interface StudentMapper {
      * @return 影响行数
      */
     int updatePassword(@Param("studentId") Long studentId, @Param("password") String password);
+    
+    /**
+     * 更新学生头像
+     * @param studentId 学生ID
+     * @param avatar 头像路径
+     * @return 影响行数
+     */
+    int updateAvatar(@Param("studentId") Long studentId, @Param("avatar") String avatar);
 }

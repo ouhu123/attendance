@@ -5,7 +5,10 @@
       <view class="logout-btn" bindtap="logout">退出</view>
     </view>
     <view class="avatar-section">
-      <view class="avatar"></view>
+      <view class="avatar" bindtap="chooseAvatar">
+        <image wx:if="{{userInfo.avatar}}" src="{{userInfo.avatar}}" mode="aspectFill"></image>
+        <text wx:else class="avatar-placeholder">头像</text>
+      </view>
       <text class="teacher-name">{{userInfo.name || '未设置姓名'}}</text>
       <text wx:if="{{userInfo.role === 'teacher'}}" class="teacher-id">{{userInfo.teacherNo || '未设置工号'}}</text>
       <text wx:else class="student-id">{{userInfo.studentNo || '未设置学号'}}</text>
@@ -55,12 +58,10 @@
   <view class="menu-section">
     <!-- 教师端功能菜单 -->
     <view wx:if="{{userInfo.role === 'teacher'}}" class="teacher-menu">
-      <!-- 教师端功能菜单已精简 -->
     </view>
 
     <!-- 学生端功能菜单 -->
     <view wx:else class="student-menu">
-      <!-- 课程表和成绩查询功能已删除 -->
     </view>
 
     <!-- 通用功能菜单 -->

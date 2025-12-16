@@ -31,4 +31,12 @@ public interface TeacherMapper {
      * @return 影响行数
      */
     int updatePassword(@Param("teacherId") Long teacherId, @Param("password") String password);
+    
+    /**
+     * 更新教师头像
+     * @param teacherId 教师ID
+     * @param avatar 头像路径
+     * @return 影响行数
+     */
+    int updateAvatar(@Param("teacherId") Long teacherId, @Param("avatar") String avatar);
 }

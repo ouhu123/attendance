@@ -56,17 +56,12 @@
       <text class="login-btn-text">登录</text>
     </button>
     
-    <!-- 忘记密码 -->
-    <view class="forgot-password">
-      <text class="forgot-text">忘记密码？</text>
-    </view>
   </view>
   
   <!-- 登录说明 -->
   <view class="login-instructions">
     <view class="instruction-title">登录说明</view>
-    <view class="instruction-item">1. 初始密码为身份证后6位，末尾x取小写，首次登录需绑定手机号方便后期密码找回。</view>
-    <view class="instruction-item">2. 如忘记密码登录且绑定的手机号已更变，请加qq2292140850</view>
+    <view class="instruction-item">1. 初始密码为身份证后6位，末尾x取小写。</view>
   </view>
   
   <!-- 底部装饰 -->

@@ -17,4 +17,10 @@
         WHERE id = #{teacherId}
     </update>
     
+    <update id="updateAvatar" parameterType="map">
+        UPDATE teacher 
+        SET avatar = #{avatar}, update_time = NOW() 
+        WHERE id = #{teacherId}
+    </update>
+    
 </mapper>

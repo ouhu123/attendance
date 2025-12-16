@@ -37,4 +37,12 @@ public interface StudentService {
      * @return 是否更新成功
      */
     boolean updatePassword(Long studentId, String password);
+    
+    /**
+     * 更新学生头像
+     * @param studentId 学生ID
+     * @param avatar 头像路径
+     * @return 是否更新成功
+     */
+    boolean updateAvatar(Long studentId, String avatar);
 }

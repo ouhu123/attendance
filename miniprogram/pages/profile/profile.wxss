@@ -66,12 +66,26 @@ page {
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
+  overflow: hidden;
 }
 
-/* 头像内文字（可以替换为图片） */
-.avatar::after {
-  content: '👤';
-  font-size: 80rpx;
+.avatar:active {
+  transform: scale(0.95);
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.1);
+}
+
+/* 头像图片 */
+.avatar image {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+/* 头像占位符 */
+.avatar-placeholder {
+  font-size: 36rpx;
+  color: #999;
 }
 
 /* 教师姓名 */

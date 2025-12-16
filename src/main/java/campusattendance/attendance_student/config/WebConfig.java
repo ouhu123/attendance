@@ -8,9 +8,19 @@ import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.http.HttpHeaders;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
+    // 头像存储路径
+    @Value("${avatar.upload.path}")
+    private String avatarUploadPath;
+
+    // 头像访问路径
+    @Value("${avatar.access.path}")
+    private String avatarAccessPath;
+
     // 移除addCorsMappings方法，避免与corsFilter Bean冲突
     // 所有CORS配置已在corsFilter Bean中完成
     /*
@@ -24,6 +34,14 @@ public class WebConfig implements WebMvcConfigurer {
                 .maxAge(3600);
     }
     */
+
+    // 配置静态资源映射
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        // 映射头像访问路径到实际存储目录
+        registry.addResourceHandler(avatarAccessPath + "**")
+                .addResourceLocations("file:" + avatarUploadPath);
+    }
 
     // 添加跨源隔离的HTTP头过滤器
     @Bean

@@ -30,4 +30,10 @@ public class TeacherServiceImpl implements TeacherService {
         int result = teacherMapper.updatePassword(teacherId, password);
         return result > 0;
     }
+    
+    @Override
+    public boolean updateAvatar(Long teacherId, String avatar) {
+        int result = teacherMapper.updateAvatar(teacherId, avatar);
+        return result > 0;
+    }
 }

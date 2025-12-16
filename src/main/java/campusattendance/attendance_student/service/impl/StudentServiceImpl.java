@@ -37,4 +37,10 @@ public class StudentServiceImpl implements StudentService {
         int result = studentMapper.updatePassword(studentId, password);
         return result > 0;
     }
+    
+    @Override
+    public boolean updateAvatar(Long studentId, String avatar) {
+        int result = studentMapper.updateAvatar(studentId, avatar);
+        return result > 0;
+    }
 }

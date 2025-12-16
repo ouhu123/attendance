@@ -28,4 +28,12 @@ public interface TeacherService {
      * @return 是否更新成功
      */
     boolean updatePassword(Long teacherId, String password);
+    
+    /**
+     * 更新教师头像
+     * @param teacherId 教师ID
+     * @param avatar 头像路径
+     * @return 是否更新成功
+     */
+    boolean updateAvatar(Long teacherId, String avatar);
 }

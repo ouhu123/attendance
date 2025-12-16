@@ -3,9 +3,12 @@
   <!-- 顶部个人信息 -->
   <view class="profile-header">
     <view class="avatar-section">
-      <view class="avatar"></view>
+      <view class="avatar" bindtap="chooseAvatar">
+        <image wx:if="{{userInfo.avatar}}" src="{{userInfo.avatar}}" mode="aspectFill"></image>
+        <text wx:else class="avatar-placeholder">头像</text>
+      </view>
       <text class="teacher-name">{{userInfo.name || '未设置姓名'}}</text>
-      <text class="teacher-id">{{userInfo.username || '未设置工号'}}</text>
+      <text class="teacher-id">{{userInfo.teacherNo || '未设置工号'}}</text>
     </view>
   </view>
   
